@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    flyers: Flyer;
     media: Media;
     categories: Category;
     users: User;
@@ -85,6 +86,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    flyers: FlyersSelect<false> | FlyersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -191,7 +193,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FlyersBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -729,6 +731,84 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlyersBlock".
+ */
+export interface FlyersBlock {
+  populateBy?: ('collection' | 'selection') | null;
+  categories?: (string | Category)[] | null;
+  limitFromProps?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'flyers';
+        value: string | Flyer;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'flyers';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flyers".
+ */
+export interface Flyer {
+  id: string;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  flyerImage: string | Media;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category: string | Category;
+  downloadableFiles?:
+    | {
+        file: string | Media;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  viewableFiles?:
+    | {
+        file: string | Media;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  videos?:
+    | {
+        video: string | Media;
+        thumbnail: string | Media;
+        title: string;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -909,6 +989,10 @@ export interface PayloadLockedDocument {
         value: string | Post;
       } | null)
     | ({
+        relationTo: 'flyers';
+        value: string | Flyer;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -1018,6 +1102,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        flyers?: T | FlyersBlockSelect<T>;
       };
   meta?:
     | T
@@ -1119,6 +1204,18 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlyersBlock_select".
+ */
+export interface FlyersBlockSelect<T extends boolean = true> {
+  populateBy?: T;
+  categories?: T;
+  limitFromProps?: T;
+  selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1147,6 +1244,50 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flyers_select".
+ */
+export interface FlyersSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  flyerImage?: T;
+  description?: T;
+  category?: T;
+  downloadableFiles?:
+    | T
+    | {
+        file?: T;
+        label?: T;
+        id?: T;
+      };
+  viewableFiles?:
+    | T
+    | {
+        file?: T;
+        label?: T;
+        id?: T;
+      };
+  videos?:
+    | T
+    | {
+        video?: T;
+        thumbnail?: T;
+        title?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

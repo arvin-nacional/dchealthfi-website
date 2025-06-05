@@ -7,6 +7,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { FlyersBlock } from '@/blocks/FlyersBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -14,12 +15,14 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  flyers: FlyersBlock,
 }
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
+  searchParams?: Promise<{ [key: string]: string }>
 }> = (props) => {
-  const { blocks } = props
+  const { blocks, searchParams } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -33,9 +36,20 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              // Special handling for FlyersBlock to pass search params
+              if (blockType === 'flyers') {
+                return (
+                  <div className="" key={index}>
+                    {/* @ts-expect-error Expected prop mismatch handled intentionally */}
+                    <FlyersBlock {...block} params={searchParams} disableInnerContainer />
+                  </div>
+                )
+              }
+
+              // Standard rendering for other block types
               return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                <div className="" key={index}>
+                  {/* @ts-expect-error Expected prop mismatch handled intentionally */}
                   <Block {...block} disableInnerContainer />
                 </div>
               )

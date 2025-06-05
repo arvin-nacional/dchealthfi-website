@@ -43,7 +43,14 @@ type Args = {
   }>
 }
 
-export default async function Page({ params: paramsPromise }: Args) {
+type PageArgs = {
+  params: Promise<{
+    slug?: string
+  }>
+  searchParams: Promise<{ [key: string]: string }>
+}
+
+export default async function Page({ params: paramsPromise, searchParams }: PageArgs) {
   const { isEnabled: draft } = await draftMode()
   const { slug = 'home' } = await paramsPromise
   const url = '/' + slug
@@ -66,7 +73,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="pt-16">
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
@@ -74,7 +81,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
+      <RenderBlocks blocks={layout} searchParams={searchParams} />
     </article>
   )
 }
