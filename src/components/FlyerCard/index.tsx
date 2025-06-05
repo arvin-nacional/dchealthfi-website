@@ -20,7 +20,7 @@ interface FlyerCardProps {
 
 const FlyerCard: React.FC<FlyerCardProps> = ({ flyer }) => {
   return (
-    <Link key={flyer.id} href={`/flyer/${flyer.id}`}>
+    <Link key={flyer.id} href={`/flyers/${flyer.slug}`}>
       <Card className="group hover:shadow-lg transition-shadow cursor-pointer bg-slate-800 border-slate-700 hover:border-slate-600">
         <CardHeader className="p-0">
           <div className="relative overflow-hidden rounded-t-lg">
