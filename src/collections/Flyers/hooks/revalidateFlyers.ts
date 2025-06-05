@@ -1,3 +1,4 @@
+import { revalidatePath, revalidateTag } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
 export const revalidateFlyers: CollectionAfterChangeHook | CollectionAfterDeleteHook = async ({
@@ -33,6 +34,17 @@ export const revalidateFlyers: CollectionAfterChangeHook | CollectionAfterDelete
     } catch (err: unknown) {
       req.payload.logger.error(`Error hitting revalidate URL: ${err}`)
     }
+  }
+
+  return doc
+}
+
+export const revalidateDelete: CollectionAfterDeleteHook = ({ doc, req: { context } }) => {
+  if (!context.disableRevalidate) {
+    const path = `/flyers/${doc?.slug}`
+
+    revalidatePath(path)
+    revalidateTag('flyers-sitemap')
   }
 
   return doc

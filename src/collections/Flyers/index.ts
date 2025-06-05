@@ -13,8 +13,7 @@ import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-// Temporarily comment out until types are resolved
-// import { revalidateFlyers } from './hooks/revalidateFlyers'
+import { revalidateFlyers, revalidateDelete } from './hooks/revalidateFlyers'
 
 import {
   MetaDescriptionField,
@@ -43,11 +42,10 @@ export const Flyers: CollectionConfig = {
     viewableFiles: true,
     videos: true,
   },
-  // Temporarily comment out hooks until types are resolved
-  // hooks: {
-  //   afterChange: [revalidateFlyers],
-  //   afterDelete: [revalidateFlyers],
-  // },
+  hooks: {
+    afterChange: [revalidateFlyers as any],
+    afterDelete: [revalidateDelete as any],
+  },
   admin: {
     defaultColumns: ['title', 'category', 'updatedAt'],
     livePreview: {
