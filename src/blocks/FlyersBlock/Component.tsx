@@ -53,7 +53,7 @@ export const FlyersBlock: React.FC<
     }
 
     // Build the query based on all search parameters
-    const where: Record<string, any> = {}
+    const where: Record<string, unknown> = {}
 
     // Filter by category if available
     if (categoryID || categories?.length) {
@@ -152,7 +152,7 @@ export const FlyersBlock: React.FC<
               const halfButtons = Math.floor(totalPageButtons / 2)
 
               let start = Math.max(1, currentPage - halfButtons)
-              let end = Math.min(start + totalPageButtons - 1, totalPages)
+              const end = Math.min(start + totalPageButtons - 1, totalPages)
 
               if (end - start + 1 < totalPageButtons) {
                 start = Math.max(1, end - totalPageButtons + 1)
