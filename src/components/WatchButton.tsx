@@ -3,14 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 import { Media } from './Media'
 
@@ -28,23 +21,45 @@ interface WatchButtonProps {
 
 export function WatchButton({ asset }: WatchButtonProps) {
   const [open, setOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const videoPlayerRef = useRef<HTMLDivElement | null>(null)
 
   // Effect to handle video playback when dialog opens
   useEffect(() => {
     if (open && videoPlayerRef.current) {
+      setIsLoading(true)
+
       // Short timeout to ensure DOM is ready
       const timer = setTimeout(() => {
         const videoElement = videoPlayerRef.current?.querySelector('video')
         if (videoElement) {
+          // Add events for loading state
+          const handleCanPlay = () => {
+            setIsLoading(false)
+          }
+
+          videoElement.addEventListener('canplay', handleCanPlay)
+
+          // Set a fallback timeout in case the canplay event doesn't fire
+          const fallbackTimer = setTimeout(() => {
+            setIsLoading(false)
+          }, 3000)
+
+          // Attempt to play
           const playPromise = videoElement.play()
           if (playPromise !== undefined) {
             playPromise.catch((error) => {
               console.error('Error auto-playing video:', error)
             })
           }
+
+          return () => {
+            videoElement.removeEventListener('canplay', handleCanPlay)
+            clearTimeout(fallbackTimer)
+          }
         }
       }, 300)
+
       return () => clearTimeout(timer)
     }
   }, [open])
@@ -65,7 +80,7 @@ export function WatchButton({ asset }: WatchButtonProps) {
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black">
+        <DialogContent className="max-w-4xl p-0 bg-black">
           <DialogHeader className="p-4">
             <DialogTitle className="text-white">{asset.name}</DialogTitle>
           </DialogHeader>
