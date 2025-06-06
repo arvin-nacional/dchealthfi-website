@@ -74,8 +74,13 @@ export default buildConfig({
           // Enable direct uploads to S3
           // This bypasses the Vercel serverless function size limits
           disableLocalStorage: true,
+          // Enable signed downloads for better performance with large files
+          signedDownloads: true,
         },
       },
+      // Enable client uploads directly to S3
+      // This is configured at the plugin level
+      clientUploads: true,
       bucket: process.env.S3_BUCKET || '',
       config: {
         credentials: {

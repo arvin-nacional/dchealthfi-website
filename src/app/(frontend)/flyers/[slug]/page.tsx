@@ -106,7 +106,7 @@ export default async function Flyer({ params: paramsPromise }: Args) {
           </Link>
         </header>
 
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
           <div className="flex justify-center w-full items-center">
             <Media resource={flyer.flyerImage} className="w-full rounded-lg object-cover" />
           </div>
@@ -153,7 +153,7 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                       <div>
                         <h3 className="font-medium">{fileItem.label || fileName}</h3>
                         <p className="text-sm text-gray-500">
-                          {fileObj?.filesize ? `${Math.round(fileObj.filesize / 1024)} KB` : ''}
+                          {fileObj?.filesize ? `${Math.round(fileObj.filesize / 1024000)} MB` : ''}
                         </p>
                       </div>
                     </div>
@@ -185,7 +185,7 @@ const queryFlyerBySlug = cache(async ({ slug }: { slug: string }) => {
     draft,
     limit: 1,
     overrideAccess: draft, // Match the pattern from posts page
-    pagination: false,     // Match the pattern from posts page
+    pagination: false, // Match the pattern from posts page
     where: {
       slug: {
         equals: slug,
