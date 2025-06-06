@@ -70,7 +70,11 @@ export default buildConfig({
     ...plugins,
     s3Storage({
       collections: {
-        media: true,
+        media: {
+          // Enable direct uploads to S3
+          // This bypasses the Vercel serverless function size limits
+          disableLocalStorage: true,
+        },
       },
       bucket: process.env.S3_BUCKET || '',
       config: {
