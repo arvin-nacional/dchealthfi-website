@@ -5,7 +5,7 @@ import React from 'react'
 import FlyerCard from '@/components/FlyerCard'
 import Filters from '@/components/Filters'
 import LocalSearchbar from '@/components/LocalSearchBar'
-import { cn } from '@/lib/utils'
+
 
 type SearchParams = {
   slug?: string
@@ -30,7 +30,7 @@ export const FlyersBlock: React.FC<
   let flyers: Flyer[] = []
   let categoriesArr: Category[] = []
   let totalPages = 1
-  let currentPage = pageNumber || 1
+  const currentPage = pageNumber || 1
 
   if (populateBy === 'collection') {
     let categoryID: string | undefined
@@ -152,7 +152,7 @@ export const FlyersBlock: React.FC<
               const halfButtons = Math.floor(totalPageButtons / 2)
 
               let start = Math.max(1, currentPage - halfButtons)
-              const end = Math.min(start + totalPageButtons - 1, totalPages)
+              let end = Math.min(start + totalPageButtons - 1, totalPages)
 
               if (end - start + 1 < totalPageButtons) {
                 start = Math.max(1, end - totalPageButtons + 1)
