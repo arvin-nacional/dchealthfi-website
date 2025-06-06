@@ -172,6 +172,9 @@ export default async function Flyer({ params: paramsPromise }: Args) {
   )
 }
 
+// Next.js revalidation configuration to ensure content is fresh
+export const revalidate = 10 // Revalidate every 10 seconds
+
 const queryFlyerBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
@@ -181,6 +184,8 @@ const queryFlyerBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'flyers',
     draft,
     limit: 1,
+    overrideAccess: draft, // Match the pattern from posts page
+    pagination: false,     // Match the pattern from posts page
     where: {
       slug: {
         equals: slug,
@@ -188,7 +193,7 @@ const queryFlyerBySlug = cache(async ({ slug }: { slug: string }) => {
     },
   })
 
-  return result.docs?.[0]
+  return result.docs?.[0] || null
 })
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
