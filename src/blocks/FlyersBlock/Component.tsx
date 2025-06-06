@@ -98,7 +98,7 @@ export const FlyersBlock: React.FC<
   // Pagination information already set in the collection handling above
 
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <div className="my-16 " id={`block-${id}`}>
       <div className="w-full flex justify-center items-center">
         <LocalSearchbar
           route="/"
@@ -108,11 +108,11 @@ export const FlyersBlock: React.FC<
         />
       </div>
       <Filters categories={categoriesArr} />
-      <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4">
+      <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4 content-center">
         {flyers.length > 0 ? (
           flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
         ) : (
-          <div className="col-span-3 text-center py-12">
+          <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
             <h3 className="text-xl font-medium">No flyers found</h3>
             <p className="text-muted-foreground mt-2">Try changing your search criteria</p>
           </div>

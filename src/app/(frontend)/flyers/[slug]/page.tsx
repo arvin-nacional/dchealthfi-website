@@ -11,6 +11,7 @@ import { DownloadButtonWrapper, WatchButtonWrapper } from './page.client'
 import { generateMeta } from '@/utilities/generateMeta'
 import { Metadata } from 'next'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import Image from 'next/image'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -72,11 +73,27 @@ export default async function Flyer({ params: paramsPromise }: Args) {
   }
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pb-12">
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
+      <div className="relative mb-8 -mt-[96px]">
+        <div className="w-full h-[350px] overflow-hidden">
+          <div className="absolute inset-0 brightness-75">
+            <Image
+              src="/header-image.png"
+              fill
+              alt="Header image"
+              priority
+              className="object-cover"
+            />
+          </div>
+        </div>
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white container z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-center">{flyer.title}</h1>
+        </div>
+      </div>
 
       <div className="container">
         <header className="mb-8">

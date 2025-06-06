@@ -14,10 +14,10 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white px-12">
+    <footer className="mt-auto border-t border-border bg-[#1a1a1a] dark:bg-card text-white px-12">
       <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
         <Link className="flex items-center" href="/">
-          <h1 className="text-3xl font-bold text-white">DCHEALTHFI</h1>
+          <Logo />
         </Link>
 
         <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">

@@ -51,7 +51,7 @@ const LocalSearchbar = ({ route, iconPosition, placeholder, otherClasses }: Cust
 
   return (
     <div
-      className={`bg-gray-200 flex min-h-[50px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses} mb-5`}
+      className={`bg-gray-200 flex min-h-[50px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses} mb-5 mx-5`}
     >
       {iconPosition === 'left' && <Search className="cursor-pointer w-5 h-5 text-blue-500" />}
 

@@ -3,6 +3,7 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { cn } from '@/utilities/ui'
 
 import type { Header } from '@/payload-types'
 
@@ -16,8 +17,30 @@ interface HeaderClientProps {
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
+  const [scrolled, setScrolled] = useState<boolean>(false)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY
+      if (scrollPosition > 25) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll)
+
+    // Initial check
+    handleScroll()
+
+    // Cleanup
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -31,12 +54,27 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className="z-20 bg-[#081632] sticky top-0 px-[90px]"
+      className={cn(
+        'z-20 sticky top-0 px-12 transition-colors duration-300',
+        scrolled ? 'bg-[#1a1a1a] shadow-md' : 'bg-transparent',
+      )}
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <div className="py-6 flex justify-between">
+      <div
+        className={cn(
+          'container flex justify-between items-center transition-all duration-300',
+          scrolled ? 'py-3' : 'py-6',
+        )}
+      >
         <Link href="/">
-          <Logo loading="eager" priority="high" className="dark:invert-0" />
+          <Logo
+            loading="eager"
+            priority="high"
+            className={cn(
+              'dark:invert-0 transition-all duration-300',
+              scrolled ? 'scale-75 transform origin-left' : '',
+            )}
+          />
         </Link>
         <HeaderNav data={data} />
       </div>

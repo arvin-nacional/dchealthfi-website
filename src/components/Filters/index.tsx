@@ -35,11 +35,11 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
   }
 
   return (
-    <div className="flex justify-center gap-2 mb-12">
+    <div className="flex justify-center gap-2 mb-12 w-full flex-wrap">
       <Button
         className={cn(
           'transition-all duration-150 hover:bg-blue-600 hover:text-white text-white',
-          !searchParams.get('category') ? 'bg-blue-600' : ''
+          !searchParams.get('category') ? 'bg-blue-600' : '',
         )}
         onClick={clearCategoryFilter}
       >
