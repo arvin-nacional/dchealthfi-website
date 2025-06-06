@@ -6,7 +6,6 @@ import FlyerCard from '@/components/FlyerCard'
 import Filters from '@/components/Filters'
 import LocalSearchbar from '@/components/LocalSearchBar'
 
-
 type SearchParams = {
   slug?: string
   category?: string
@@ -75,7 +74,7 @@ export const FlyersBlock: React.FC<
       depth: 1,
       limit,
       page: pageNumber,
-      where,
+      where: where as any,
     })
 
     flyers = fetchedFlyers.docs
