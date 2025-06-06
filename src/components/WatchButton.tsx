@@ -1,17 +1,18 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { Play } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
+import { useState, useRef, useEffect } from 'react'
+import { Play } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { VideoPlayer } from "./VideoPlayer"
+} from '@/components/ui/dialog'
+
+import { Media } from './Media'
 
 interface VideoAsset {
   id: string
@@ -27,12 +28,29 @@ interface WatchButtonProps {
 
 export function WatchButton({ asset }: WatchButtonProps) {
   const [open, setOpen] = useState(false)
+  const videoPlayerRef = useRef<HTMLDivElement | null>(null)
+
+  // Effect to handle video playback when dialog opens
+  useEffect(() => {
+    if (open && videoPlayerRef.current) {
+      // Short timeout to ensure DOM is ready
+      const timer = setTimeout(() => {
+        const videoElement = videoPlayerRef.current?.querySelector('video')
+        if (videoElement) {
+          const playPromise = videoElement.play()
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.error('Error auto-playing video:', error)
+            })
+          }
+        }
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [open])
 
   const handleWatch = () => {
     setOpen(true)
-    toast.info("Opening video", {
-      description: `Now playing: ${asset.name}`,
-    })
   }
 
   return (
@@ -50,12 +68,13 @@ export function WatchButton({ asset }: WatchButtonProps) {
         <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black">
           <DialogHeader className="p-4">
             <DialogTitle className="text-white">{asset.name}</DialogTitle>
-            <DialogDescription className="text-gray-300">
-              Video preview
-            </DialogDescription>
           </DialogHeader>
-          <div className="w-full">
-            <VideoPlayer resource={asset.resource} />
+          <div className="w-full" ref={videoPlayerRef}>
+            <Media
+              resource={asset.resource}
+              size="full"
+              className="w-full h-auto rounded-lg overflow-hidden"
+            />
           </div>
         </DialogContent>
       </Dialog>
