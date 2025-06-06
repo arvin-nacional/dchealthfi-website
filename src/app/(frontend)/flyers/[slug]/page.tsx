@@ -106,13 +106,9 @@ export default async function Flyer({ params: paramsPromise }: Args) {
           </Link>
         </header>
 
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-          <div>
-            <Media
-              resource={flyer.flyerImage}
-              size="full"
-              className="w-full h-auto rounded-lg overflow-hidden"
-            />
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+          <div className="flex justify-center w-full items-center">
+            <Media resource={flyer.flyerImage} className="w-full rounded-lg object-cover" />
           </div>
 
           <div>

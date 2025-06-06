@@ -52,7 +52,12 @@ export const FlyersBlock: React.FC<
     }
 
     // Build the query based on all search parameters
-    const where: Record<string, unknown> = {}
+    const where: Record<string, unknown> = {
+      // Only show published flyers
+      _status: {
+        equals: 'published',
+      },
+    }
 
     // Filter by category if available
     if (categoryID || categories?.length) {

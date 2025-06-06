@@ -37,7 +37,7 @@ const FlyerCard: React.FC<FlyerCardProps> = ({ flyer }) => {
               </div>
             )}
             <Badge className="absolute top-2 right-2 bg-blue-600 text-white border-0">
-              {typeof flyer.category === 'string' ? flyer.category : flyer.category.title}
+              {typeof flyer.category === 'string' ? flyer.category : flyer.category?.title}
             </Badge>
           </div>
         </CardHeader>
