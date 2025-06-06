@@ -24,7 +24,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
 
-export const Flyers: CollectionConfig = {
+export const Flyers: CollectionConfig<'flyers'> = {
   slug: 'flyers',
   access: {
     create: authenticated,
@@ -43,8 +43,15 @@ export const Flyers: CollectionConfig = {
     videos: true,
   },
   hooks: {
-    afterChange: [revalidateFlyers as any],
-    afterDelete: [revalidateDelete as any],
+    afterChange: [revalidateFlyers],
+    afterDelete: [revalidateDelete],
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // We set this interval for optimal live preview
+      },
+    },
   },
   admin: {
     defaultColumns: ['title', 'category', 'updatedAt'],
@@ -52,7 +59,7 @@ export const Flyers: CollectionConfig = {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'flyers' as any,
+          collection: 'flyers',
           req,
         })
 
@@ -62,7 +69,7 @@ export const Flyers: CollectionConfig = {
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'flyers' as any,
+        collection: 'flyers',
         req,
       }),
     useAsTitle: 'title',

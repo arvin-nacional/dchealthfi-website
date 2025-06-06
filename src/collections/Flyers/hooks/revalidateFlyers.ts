@@ -1,7 +1,7 @@
 import { revalidatePath, revalidateTag } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-export const revalidateFlyers: CollectionAfterChangeHook | CollectionAfterDeleteHook = async ({
+export const revalidateFlyers: CollectionAfterChangeHook = async ({
   doc,
   req,
   operation,

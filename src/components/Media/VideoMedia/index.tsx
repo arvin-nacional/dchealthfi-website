@@ -25,6 +25,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
 
   if (resource && typeof resource === 'object') {
     // Use the full URL provided by the resource object
+    // With S3 storage, resource.url will contain the full S3 URL
     const videoUrl = resource.url || ''
 
     return (
@@ -38,7 +39,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         playsInline
         ref={videoRef}
       >
-        <source src={videoUrl} />
+        <source src={getMediaUrl(videoUrl)} />
       </video>
     )
   }
