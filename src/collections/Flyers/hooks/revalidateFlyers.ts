@@ -45,6 +45,7 @@ export const revalidateDelete: CollectionAfterDeleteHook = ({ doc, req: { contex
 
     revalidatePath(path)
     revalidateTag('flyers-sitemap')
+    revalidateTag('flyers-block') // Add revalidation for FlyersBlock component
   }
 
   return doc

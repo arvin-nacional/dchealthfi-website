@@ -1,11 +1,15 @@
 import type { Category, Flyer, FlyersBlock as FlyersBlockProps } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
+import React, { cache } from 'react'
 import FlyerCard from '@/components/FlyerCard'
 import Filters from '@/components/Filters'
 import LocalSearchbar from '@/components/LocalSearchBar'
 import PaginationQuery from '@/components/PaginationQuery'
+// Next.js revalidation configuration for this component
+
+// Set a revalidation time similar to the flyers slug page
+export const revalidate = 10 // Revalidate every 10 seconds
 
 type SearchParams = {
   slug?: string
@@ -15,11 +19,81 @@ type SearchParams = {
   [key: string]: string | undefined
 }
 
+// Cache this function to improve performance and reduce redundant database queries
+// React's cache() ensures the function only executes once for identical arguments
+// https://react.dev/reference/react/cache
+const getFlyers = cache(
+  async ({
+    pageNumber = 1,
+    limit = 1000,
+    categoryID,
+    searchQuery,
+    categoryFilter,
+  }: {
+    pageNumber: number
+    limit: number
+    categoryID?: string
+    searchQuery?: string
+    categoryFilter?: string[]
+  }) => {
+    const payload = await getPayload({ config: configPromise })
+
+    // Build the query based on all search parameters
+    const where: Record<string, unknown> = {
+      // Only show published flyers
+      _status: {
+        equals: 'published',
+      },
+    }
+
+    // Filter by category if available
+    if (categoryID || categoryFilter?.length) {
+      where.category = {
+        equals: categoryID || (categoryFilter?.length ? categoryFilter[0] : undefined),
+      }
+    }
+
+    // Add search functionality if search param is provided
+    if (searchQuery) {
+      where.title = {
+        like: searchQuery,
+      }
+    }
+
+    // Fetch flyers with all applicable filters
+    const fetchedFlyers = await payload.find({
+      collection: 'flyers',
+      depth: 1,
+      limit,
+      page: pageNumber,
+      where: where as any,
+    })
+
+    // Revalidation is handled by the export const revalidate and hooks
+
+    return fetchedFlyers
+  },
+)
+
+// Cache the categories fetch function
+const getCategories = cache(async () => {
+  const payload = await getPayload({ config: configPromise })
+
+  // Fetch all categories for the filter UI
+  const fetchedCategories = await payload.find({
+    collection: 'categories',
+    depth: 1,
+  })
+
+  // Revalidation is handled by the export const revalidate and hooks
+
+  return fetchedCategories.docs
+})
+
 export const FlyersBlock: React.FC<
   FlyersBlockProps & { id?: string; params?: Promise<SearchParams> }
 > = async ({ id, selectedDocs, limitFromProps, populateBy, categories, params }) => {
   const limit = limitFromProps || 12
-  const payload = await getPayload({ config: configPromise })
   const searchParams = await params
 
   // Extract all possible search parameters
@@ -36,63 +110,30 @@ export const FlyersBlock: React.FC<
     let categoryID: string | undefined
 
     if (categoryTitle) {
-      // Step 1: Fetch the category that matches the title
-      const matchedCategory = await payload.find({
-        collection: 'categories',
-        where: {
-          title: {
-            equals: categoryTitle,
-          },
-        },
-        limit: 1,
-      })
-
-      if (matchedCategory.docs.length > 0) {
-        categoryID = matchedCategory.docs[0]?.id
+      // Get category ID from title if needed
+      const allCategories = await getCategories()
+      const matchedCategory = allCategories.find((cat) => cat.title === categoryTitle)
+      if (matchedCategory) {
+        categoryID = matchedCategory.id
       }
     }
 
-    // Build the query based on all search parameters
-    const where: Record<string, unknown> = {
-      // Only show published flyers
-      _status: {
-        equals: 'published',
-      },
-    }
-
-    // Filter by category if available
-    if (categoryID || categories?.length) {
-      where.category = {
-        equals: categoryID || (categories?.length ? categories[0] : undefined),
-      }
-    }
-
-    // Add search functionality if search param is provided
-    if (searchQuery) {
-      where.title = {
-        like: searchQuery,
-      }
-    }
-
-    // Step 2: Fetch flyers with all applicable filters
-    const fetchedFlyers = await payload.find({
-      collection: 'flyers',
-      depth: 1,
+    // Use the cached function to fetch flyers
+    const fetchedFlyers = await getFlyers({
+      pageNumber: currentPage,
       limit,
-      page: pageNumber,
-      where: where as any,
+      categoryID,
+      searchQuery,
+      categoryFilter: categories
+        ? (categories.map((c) => (typeof c === 'string' ? c : c.id)).filter(Boolean) as string[])
+        : undefined,
     })
 
     flyers = fetchedFlyers.docs
     totalPages = fetchedFlyers.totalPages || 1
 
-    // Step 3: Fetch all categories for the filter UI
-    const fetchedCategories = await payload.find({
-      collection: 'categories',
-      depth: 1,
-    })
-
-    categoriesArr = fetchedCategories.docs
+    // Use the cached function to fetch categories
+    categoriesArr = await getCategories()
   } else {
     if (selectedDocs?.length) {
       flyers = selectedDocs
@@ -128,10 +169,7 @@ export const FlyersBlock: React.FC<
       {/* Pagination using PaginationQuery component */}
       {populateBy === 'collection' && totalPages > 1 && (
         <div className="container mt-8 flex justify-center">
-          <PaginationQuery 
-            pageNumber={currentPage} 
-            isNext={currentPage < totalPages} 
-          />
+          <PaginationQuery pageNumber={currentPage} isNext={currentPage < totalPages} />
         </div>
       )}
     </div>
