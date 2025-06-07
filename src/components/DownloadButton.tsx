@@ -28,11 +28,23 @@ export function DownloadButton({ asset }: DownloadButtonProps) {
     
     setIsDownloading(true)
     
-    try {
-      // Direct XHR approach to download without page navigation
+    // Create a promise to track download
+    const downloadPromise = new Promise<string>((resolve, reject) => {
+      // Use XMLHttpRequest to get progress events
       const xhr = new XMLHttpRequest();
       xhr.open('GET', asset.url, true);
       xhr.responseType = 'blob';
+      
+      // Track download progress
+      xhr.onprogress = (event) => {
+        if (event.lengthComputable) {
+          // Update the toast with progress
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          toast.loading(`Downloading: ${percentComplete}%`, { id: 'download-progress' });
+        } else {
+          toast.loading('Downloading...', { id: 'download-progress' });
+        }
+      };
       
       xhr.onload = function() {
         if (this.status === 200) {
@@ -54,10 +66,22 @@ export function DownloadButton({ asset }: DownloadButtonProps) {
           // Clean up the blob URL
           window.URL.revokeObjectURL(url);
           
-          // Show success toast
+          // Dismiss the progress toast
+          toast.dismiss('download-progress');
+          
+          // Show success toast instead
           toast.success(`Downloaded ${asset.name}`, {
-            description: "File downloaded successfully",
+            description: "File downloaded successfully"
           });
+          
+          // Resolve the promise
+          resolve(`success`);
+        } else {
+          // Dismiss the progress toast
+          toast.dismiss('download-progress');
+          
+          // Reject on HTTP error
+          reject(new Error(`Failed to download (${this.status})`));
         }
         
         // Reset download state
@@ -67,13 +91,17 @@ export function DownloadButton({ asset }: DownloadButtonProps) {
       xhr.onerror = function() {
         console.error('Download failed');
         setIsDownloading(false);
+        reject(new Error('Network error during download'));
       };
       
       xhr.send();
-    } catch (error) {
-      console.error('Download error:', error);
-      setIsDownloading(false);
-    }
+    });
+    
+    // Handle download error
+    downloadPromise.catch((err: Error) => {
+      toast.dismiss('download-progress');
+      toast.error(`Download failed: ${err.message}`);
+    });
   }
 
   return (
