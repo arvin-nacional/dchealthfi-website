@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { formUrlQuery } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, useTransition } from 'react'
 
 interface Props {
   pageNumber: number
@@ -13,18 +14,34 @@ interface Props {
 const PaginationQuery = ({ pageNumber, isNext, totalPages = 1 }: Props) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  
+  // For optimistic UI updates
+  const [optimisticPage, setOptimisticPage] = useState(pageNumber)
+  const [isPending, startTransition] = useTransition()
+  
+  // Keep optimistic page in sync with actual page when URL changes
+  useEffect(() => {
+    setOptimisticPage(pageNumber)
+  }, [pageNumber])
 
   const handleNavigation = (page: number) => {
-    // Don't navigate if clicking current page
-    if (page === pageNumber) return
+    // Don't navigate if clicking current page or if we're in a transition
+    if (page === pageNumber || isPending) return
     
+    // Immediately update the UI for optimistic rendering
+    setOptimisticPage(page)
+    
+    // Create the new URL
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: 'page',
       value: page.toString(),
     })
 
-    router.push(newUrl, { scroll: false })
+    // Use transition to change the URL (this will handle the actual navigation)
+    startTransition(() => {
+      router.push(newUrl, { scroll: false })
+    })
   }
 
   if (totalPages <= 1) return null
@@ -53,9 +70,9 @@ const PaginationQuery = ({ pageNumber, isNext, totalPages = 1 }: Props) => {
       <Button
         variant="outline"
         size="icon"
-        disabled={pageNumber === 1}
-        onClick={() => handleNavigation(pageNumber - 1)}
-        className="h-8 w-8"
+        disabled={optimisticPage === 1 || isPending}
+        onClick={() => handleNavigation(optimisticPage - 1)}
+        className={`h-8 w-8 transition-all ${isPending ? 'opacity-70' : ''}`}
       >
         <span className="sr-only">Previous page</span>
         <svg 
@@ -76,10 +93,11 @@ const PaginationQuery = ({ pageNumber, isNext, totalPages = 1 }: Props) => {
       {visiblePages.map((page) => (
         <Button
           key={page}
-          variant={page === pageNumber ? "default" : "outline"}
+          variant={page === optimisticPage ? "default" : "outline"}
           size="icon"
           onClick={() => handleNavigation(page)}
-          className="h-8 w-8"
+          className={`h-8 w-8 font-medium transition-all ${isPending ? 'opacity-70' : ''}`}
+          disabled={isPending}
         >
           {page}
         </Button>
@@ -88,9 +106,9 @@ const PaginationQuery = ({ pageNumber, isNext, totalPages = 1 }: Props) => {
       <Button
         variant="outline"
         size="icon"
-        disabled={!isNext}
-        onClick={() => handleNavigation(pageNumber + 1)}
-        className="h-8 w-8"
+        disabled={!isNext || isPending}
+        onClick={() => handleNavigation(optimisticPage + 1)}
+        className={`h-8 w-8 transition-all ${isPending ? 'opacity-70' : ''}`}
       >
         <span className="sr-only">Next page</span>
         <svg 
