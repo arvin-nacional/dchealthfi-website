@@ -169,7 +169,11 @@ export const FlyersBlock: React.FC<
       {/* Pagination using PaginationQuery component */}
       {populateBy === 'collection' && totalPages > 1 && (
         <div className="container mt-8 flex justify-center">
-          <PaginationQuery pageNumber={currentPage} isNext={currentPage < totalPages} />
+          <PaginationQuery 
+            pageNumber={currentPage} 
+            isNext={currentPage < totalPages} 
+            totalPages={totalPages} 
+          />
         </div>
       )}
     </div>
