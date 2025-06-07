@@ -6,6 +6,7 @@ import FlyerCard from '@/components/FlyerCard'
 import Filters from '@/components/Filters'
 import LocalSearchbar from '@/components/LocalSearchBar'
 import PaginationQuery from '@/components/PaginationQuery'
+import FlyersBlockClientWrapper from './ClientWrapper'
 // Next.js revalidation configuration for this component
 
 // Set a revalidation time similar to the flyers slug page
@@ -155,24 +156,28 @@ export const FlyersBlock: React.FC<
         />
       </div>
       <Filters categories={categoriesArr} />
-      <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4 content-center">
-        {flyers.length > 0 ? (
-          flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
-        ) : (
-          <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
-            <h3 className="text-xl font-medium">No flyers found</h3>
-            <p className="text-muted-foreground mt-2">Try changing your search criteria</p>
-          </div>
-        )}
-      </div>
+
+      {/* Client wrapper for loading skeleton */}
+      <FlyersBlockClientWrapper limit={limit}>
+        <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4 content-center">
+          {flyers.length > 0 ? (
+            flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
+          ) : (
+            <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
+              <h3 className="text-xl font-medium">No flyers found</h3>
+              <p className="text-muted-foreground mt-2">Try changing your search category</p>
+            </div>
+          )}
+        </div>
+      </FlyersBlockClientWrapper>
 
       {/* Pagination using PaginationQuery component */}
       {populateBy === 'collection' && totalPages > 1 && (
         <div className="container mt-8 flex justify-center">
-          <PaginationQuery 
-            pageNumber={currentPage} 
-            isNext={currentPage < totalPages} 
-            totalPages={totalPages} 
+          <PaginationQuery
+            pageNumber={currentPage}
+            isNext={currentPage < totalPages}
+            totalPages={totalPages}
           />
         </div>
       )}

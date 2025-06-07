@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 import { toast } from "sonner"
 
 interface Asset {
@@ -19,46 +19,60 @@ interface DownloadButtonProps {
 
 export function DownloadButton({ asset }: DownloadButtonProps) {
   const [isDownloading, setIsDownloading] = useState(false)
-
-  const handleDownload = async () => {
+  
+  const handleDownload = async (e: React.MouseEvent) => {
+    // Prevent default navigation
+    e.preventDefault()
+    
+    if (!asset?.url) return
+    
     setIsDownloading(true)
-
+    
     try {
-      // Create a temporary link to trigger download
-      const link = document.createElement("a")
-      link.href = asset.url
-      link.download = asset.name
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-
-      // Show initial download started toast with a specific ID so we can dismiss it later
-      const toastId = toast.loading("Download started", {
-        description: `${asset.name} is being downloaded.`,
-      })
+      // Direct XHR approach to download without page navigation
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', asset.url, true);
+      xhr.responseType = 'blob';
       
-      // Show download completed toast after a short delay and dismiss the loading toast
-      // Note: We can't actually detect when browser downloads complete,
-      // so we simulate completion with a reasonable delay based on file size
-      const fileSizeInKB = asset.size ? parseInt(asset.size) : 100
-      const estimatedTimeInMs = Math.max(2000, Math.min(fileSizeInKB * 10, 5000)) // Between 2-5 seconds
+      xhr.onload = function() {
+        if (this.status === 200) {
+          // Create a blob URL from the response
+          const blob = new Blob([this.response]);
+          const url = window.URL.createObjectURL(blob);
+          
+          // Create a temporary link and trigger download
+          const link = document.createElement('a');
+          link.style.display = 'none';
+          link.href = url;
+          link.download = asset.name || 'download';
+          
+          // Add to DOM, click and remove
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          // Clean up the blob URL
+          window.URL.revokeObjectURL(url);
+          
+          // Show success toast
+          toast.success(`Downloaded ${asset.name}`, {
+            description: "File downloaded successfully",
+          });
+        }
+        
+        // Reset download state
+        setIsDownloading(false);
+      };
       
-      setTimeout(() => {
-        // Dismiss the loading toast and show success toast
-        toast.dismiss(toastId)
-        toast.success("Download complete", {
-          description: `${asset.name} was downloaded successfully.`,
-        })
-      }, estimatedTimeInMs)
+      xhr.onerror = function() {
+        console.error('Download failed');
+        setIsDownloading(false);
+      };
+      
+      xhr.send();
     } catch (error) {
-      toast.error("Download failed", {
-        description: "There was an error downloading the file. Please try again.",
-      })
-    } finally {
-      // Reset the downloading state after a short delay
-      setTimeout(() => {
-        setIsDownloading(false)
-      }, 1500)
+      console.error('Download error:', error);
+      setIsDownloading(false);
     }
   }
 
