@@ -8,6 +8,8 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { FlyersBlock } from '@/blocks/FlyersBlock/Component'
+import { CategoryBlock } from '@/blocks/CategoryBlock/Component'
+import { DownloadBlock } from '@/blocks/DownloadBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,6 +18,8 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   flyers: FlyersBlock,
+  categoryBlock: CategoryBlock,
+  downloadBlock: DownloadBlock,
 }
 
 export const RenderBlocks: React.FC<{

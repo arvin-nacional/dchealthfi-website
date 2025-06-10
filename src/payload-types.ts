@@ -193,7 +193,16 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FlyersBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | FlyersBlock
+    | CategoryBlock
+    | DownloadBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -810,6 +819,74 @@ export interface Flyer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategoryBlock".
+ */
+export interface CategoryBlock {
+  heading: string;
+  categories: {
+    icon:
+      | 'Heart'
+      | 'Shield'
+      | 'Leaf'
+      | 'Zap'
+      | 'Brain'
+      | 'Users'
+      | 'FileText'
+      | 'Download'
+      | 'FileArchive'
+      | 'FolderOpen'
+      | 'File'
+      | 'FilePdf'
+      | 'FileSpreadsheet'
+      | 'Globe';
+    iconColor:
+      | 'red-400'
+      | 'blue-400'
+      | 'green-400'
+      | 'yellow-400'
+      | 'purple-400'
+      | 'orange-400'
+      | 'teal-400'
+      | 'pink-400';
+    title: string;
+    description: string;
+    link?: {
+      type?: ('page' | 'flyer' | 'custom') | null;
+      page?: (string | null) | Page;
+      flyer?: (string | null) | Flyer;
+      url?: string | null;
+      newTab?: boolean | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'categoryBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadBlock".
+ */
+export interface DownloadBlock {
+  title: string;
+  description?: string | null;
+  fileGroups: {
+    groupTitle: string;
+    downloadableFiles: {
+      label: string;
+      file: string | Media;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  backgroundColor?: ('default' | 'light' | 'dark') | null;
+  layout?: ('list' | 'grid') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'downloadBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1104,6 +1181,8 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         flyers?: T | FlyersBlockSelect<T>;
+        categoryBlock?: T | CategoryBlockSelect<T>;
+        downloadBlock?: T | DownloadBlockSelect<T>;
       };
   meta?:
     | T
@@ -1212,6 +1291,58 @@ export interface FlyersBlockSelect<T extends boolean = true> {
   categories?: T;
   limitFromProps?: T;
   selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategoryBlock_select".
+ */
+export interface CategoryBlockSelect<T extends boolean = true> {
+  heading?: T;
+  categories?:
+    | T
+    | {
+        icon?: T;
+        iconColor?: T;
+        title?: T;
+        description?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              page?: T;
+              flyer?: T;
+              url?: T;
+              newTab?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadBlock_select".
+ */
+export interface DownloadBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  fileGroups?:
+    | T
+    | {
+        groupTitle?: T;
+        downloadableFiles?:
+          | T
+          | {
+              label?: T;
+              file?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  backgroundColor?: T;
+  layout?: T;
   id?: T;
   blockName?: T;
 }

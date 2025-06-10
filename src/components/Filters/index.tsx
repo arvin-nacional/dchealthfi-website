@@ -25,7 +25,7 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
   const handleUpdateParams = (value: string) => {
     // Update local state immediately for optimistic UI
     setActiveCategory(value)
-    
+
     // Then update the URL
     const newUrl: string = formUrlQuery({
       params: searchParams.toString(),
@@ -39,7 +39,7 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
   const clearCategoryFilter = () => {
     // Update local state immediately for optimistic UI
     setActiveCategory(null)
-    
+
     // Then update the URL
     const newUrl: string = formUrlQuery({
       params: searchParams.toString(),
@@ -54,8 +54,8 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
     <div className="flex justify-center gap-2 mb-12 w-full flex-wrap">
       <Button
         className={cn(
-          'transition-all duration-150 hover:bg-blue-600 hover:text-white text-white',
-          !activeCategory ? 'bg-blue-600' : '',
+          'transition-all duration-150 bg-gray-200 hover:bg-blue-600 hover:text-white text-gray-700',
+          !activeCategory ? 'bg-blue-600 text-white' : '',
         )}
         onClick={clearCategoryFilter}
       >
@@ -66,8 +66,8 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
           <Button
             key={category.id}
             className={cn(
-              'transition-all duration-150 hover:bg-blue-600 hover:text-white text-white',
-              activeCategory === category.title ? 'bg-blue-600' : '',
+              'transition-all duration-150 bg-gray-200 hover:bg-blue-600 hover:text-white text-gray-700',
+              activeCategory === category.title ? 'bg-blue-600 text-white' : '',
             )}
             onClick={() => handleUpdateParams(category.title)}
           >
