@@ -1,15 +1,15 @@
 import type { Category, Flyer, FlyersBlock as FlyersBlockProps } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React, { cache } from 'react'
+import React, { Suspense, cache } from 'react'
 import FlyerCard from '@/components/FlyerCard'
 import Filters from '@/components/Filters'
 import LocalSearchbar from '@/components/LocalSearchBar'
 import PaginationQuery from '@/components/PaginationQuery'
 // Next.js revalidation configuration for this component
 
-// Set a revalidation time similar to the flyers slug page
-export const revalidate = 10 // Revalidate every 10 seconds
+// Set a longer revalidation time to improve performance
+export const revalidate = 3600 // Revalidate every hour instead of every 10 seconds
 
 type SearchParams = {
   slug?: string
@@ -25,7 +25,7 @@ type SearchParams = {
 const getFlyers = cache(
   async ({
     pageNumber = 1,
-    limit = 1000,
+    limit = 12, // More reasonable default limit for better performance
     categoryID,
     searchQuery,
     categoryFilter,
@@ -90,6 +90,12 @@ const getCategories = cache(async () => {
   return fetchedCategories.docs
 })
 
+// Import client components from separate files
+import { FlyersSearchBar } from '@/blocks/FlyersBlock/FlyersSearchBar'
+import { FlyersLoadingState } from '@/blocks/FlyersBlock/LoadingState'
+import { Skeleton } from '@/components/ui/skeleton'
+
+// Main FlyersBlock component (Server Component)
 export const FlyersBlock: React.FC<
   FlyersBlockProps & { id?: string; params?: Promise<SearchParams> }
 > = async ({ id, selectedDocs, limitFromProps, populateBy, categories, params }) => {
@@ -106,65 +112,83 @@ export const FlyersBlock: React.FC<
   let totalPages = 1
   const currentPage = pageNumber || 1
 
+  // Data fetching code
   if (populateBy === 'collection') {
-    let categoryID: string | undefined
+    try {
+      let categoryID: string | undefined
 
-    if (categoryTitle) {
-      // Get category ID from title if needed
-      const allCategories = await getCategories()
-      const matchedCategory = allCategories.find((cat) => cat.title === categoryTitle)
-      if (matchedCategory) {
-        categoryID = matchedCategory.id
+      if (categoryTitle) {
+        // Get category ID from title if needed
+        const allCategories = await getCategories()
+        const matchedCategory = allCategories.find((cat) => cat.title === categoryTitle)
+        if (matchedCategory) {
+          categoryID = matchedCategory.id
+        }
       }
+
+      // Wrap data fetching in Promise.all to fetch in parallel
+      const [fetchedFlyers, fetchedCategories] = await Promise.all([
+        getFlyers({
+          pageNumber: currentPage,
+          limit,
+          categoryID,
+          searchQuery,
+          categoryFilter: categories
+            ? (categories
+                .map((c) => (typeof c === 'string' ? c : c.id))
+                .filter(Boolean) as string[])
+            : undefined,
+        }),
+        getCategories(),
+      ])
+
+      flyers = fetchedFlyers.docs
+      totalPages = fetchedFlyers.totalPages || 1
+      categoriesArr = fetchedCategories
+    } catch (error) {
+      console.error('Error fetching flyers:', error)
+      // We'll handle the empty state in the UI
     }
-
-    // Use the cached function to fetch flyers
-    const fetchedFlyers = await getFlyers({
-      pageNumber: currentPage,
-      limit,
-      categoryID,
-      searchQuery,
-      categoryFilter: categories
-        ? (categories.map((c) => (typeof c === 'string' ? c : c.id)).filter(Boolean) as string[])
-        : undefined,
-    })
-
-    flyers = fetchedFlyers.docs
-    totalPages = fetchedFlyers.totalPages || 1
-
-    // Use the cached function to fetch categories
-    categoriesArr = await getCategories()
-  } else {
-    if (selectedDocs?.length) {
-      flyers = selectedDocs
-        .map((flyer) => (typeof flyer.value === 'object' ? flyer.value : null))
-        .filter(Boolean) as Flyer[]
-    }
+  } else if (selectedDocs?.length) {
+    flyers = selectedDocs
+      .map((flyer) => (typeof flyer.value === 'object' ? flyer.value : null))
+      .filter(Boolean) as Flyer[]
   }
 
-  // Pagination information already set in the collection handling above
-
   return (
-    <div className="my-16 " id={`block-${id}`}>
-      <div className="w-full flex justify-center items-center">
-        <LocalSearchbar
-          route="/"
-          iconPosition="left"
-          placeholder="Search flyers..."
-          otherClasses="max-w-[650px] mb-8"
-        />
-      </div>
-      <Filters categories={categoriesArr} />
-      <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4 content-center">
-        {flyers.length > 0 ? (
-          flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
-        ) : (
-          <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
-            <h3 className="text-xl font-medium">No flyers found</h3>
-            <p className="text-muted-foreground mt-2">Try changing your search criteria</p>
+    <div className="my-16" id={`block-${id}`}>
+      <Suspense
+        fallback={
+          <div className="w-full h-16 flex justify-center">
+            <Skeleton className="h-12 w-[650px]" />
           </div>
-        )}
-      </div>
+        }
+      >
+        <FlyersSearchBar />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="h-12">
+            <Skeleton className="h-8 w-full" />
+          </div>
+        }
+      >
+        <Filters categories={categoriesArr} />
+      </Suspense>
+
+      <Suspense fallback={<FlyersLoadingState />}>
+        <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4 content-center">
+          {flyers.length > 0 ? (
+            flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
+          ) : (
+            <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
+              <h3 className="text-xl font-medium">No flyers found</h3>
+              <p className="text-muted-foreground mt-2">Try changing your search criteria</p>
+            </div>
+          )}
+        </div>
+      </Suspense>
 
       {/* Pagination using PaginationQuery component */}
       {populateBy === 'collection' && totalPages > 1 && (
