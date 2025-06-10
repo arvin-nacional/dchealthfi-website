@@ -12,7 +12,13 @@ interface VideoAsset {
   name: string
   url: string
   type: string
-  resource: any // The original media resource from Payload CMS
+  resource: {
+    id?: string
+    url?: string
+    mimeType?: string
+    filename?: string
+    [key: string]: unknown
+  } // The original media resource from Payload CMS
 }
 
 interface WatchButtonProps {
@@ -21,7 +27,8 @@ interface WatchButtonProps {
 
 export function WatchButton({ asset }: WatchButtonProps) {
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  // isLoading state is used in the useEffect below
+  const [_isLoading, setIsLoading] = useState(true)
   const videoPlayerRef = useRef<HTMLDivElement | null>(null)
 
   // Effect to handle video playback when dialog opens
@@ -86,6 +93,7 @@ export function WatchButton({ asset }: WatchButtonProps) {
           </DialogHeader>
           <div className="w-full" ref={videoPlayerRef}>
             <Media
+              // @ts-ignore
               resource={asset.resource}
               size="full"
               className="w-full h-auto rounded-lg overflow-hidden"

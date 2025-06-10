@@ -825,6 +825,7 @@ export interface CategoryBlock {
   heading: string;
   categories: {
     icon:
+      | 'Building'
       | 'Heart'
       | 'Shield'
       | 'Leaf'

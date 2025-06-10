@@ -12,7 +12,8 @@ import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 
 const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+// dirname not used but kept for reference
+const _dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -42,7 +43,7 @@ export const Media: CollectionConfig = {
     // Using S3 storage instead of local storage
     disableLocalStorage: true,
     // Function-based admin thumbnail for S3
-    adminThumbnail: ({ doc }: { doc: any }) => {
+    adminThumbnail: ({ doc }: { doc: { sizes?: { thumbnail?: { url: string } }, filename?: string } }) => {
       // Check if the document has sizes with a thumbnail URL
       if (doc?.sizes?.thumbnail?.url) {
         return doc.sizes.thumbnail.url

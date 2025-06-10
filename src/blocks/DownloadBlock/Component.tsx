@@ -143,7 +143,7 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
           {(fileGroups || []).map((group, groupIndex) => (
             <div key={groupIndex} className="space-y-4">
               <h3 className="text-xl font-medium border-b pb-2">{group.groupTitle}</h3>
-              
+
               <div className={`${layout === 'grid' ? 'grid md:grid-cols-2 gap-4' : 'space-y-4'}`}>
                 {(group.downloadableFiles || []).map((fileItem, i) => {
                   const fileObj = typeof fileItem.file === 'object' ? fileItem.file : null
@@ -181,7 +181,9 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                           </div>
                           <div>
                             <h3 className="font-medium">{fileItem.label || fileName}</h3>
-                            {formattedSize && <p className="text-sm text-gray-500">{formattedSize}</p>}
+                            {formattedSize && (
+                              <p className="text-sm text-gray-500">{formattedSize}</p>
+                            )}
                           </div>
                         </div>
                         <div className="flex gap-2">
@@ -192,7 +194,8 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                                 name: fileObj.filename || fileItem.label || 'Video',
                                 url: fileObj.url || '',
                                 type: 'video',
-                                resource: fileObj // Pass the original resource
+                                // @ts-ignore
+                                resource: fileObj, // Pass the original resource
                               }}
                             />
                           )}

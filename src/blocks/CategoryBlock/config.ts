@@ -26,6 +26,7 @@ export const CategoryBlock: Block = {
           type: 'select',
           required: true,
           options: [
+            { label: 'Building', value: 'Building' },
             { label: 'Heart', value: 'Heart' },
             { label: 'Shield', value: 'Shield' },
             { label: 'Leaf', value: 'Leaf' },

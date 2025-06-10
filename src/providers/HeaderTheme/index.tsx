@@ -19,15 +19,22 @@ const initialContext: ContextType = {
 const HeaderThemeContext = createContext(initialContext)
 
 export const HeaderThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(
-    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
-  )
+  // Always default to 'light' theme
+  const [headerTheme, setThemeState] = useState<Theme | undefined | null>('light')
 
-  const setHeaderTheme = useCallback((themeToSet: Theme | null) => {
-    setThemeState(themeToSet)
+  const setHeaderTheme = useCallback((_themeToSet: Theme | null) => {
+    // Force 'light' theme regardless of what's passed
+    setThemeState('light')
   }, [])
 
-  return <HeaderThemeContext value={{ headerTheme, setHeaderTheme }}>{children}</HeaderThemeContext>
+  // Apply the light theme to the document
+  React.useEffect(() => {
+    if (canUseDOM) {
+      document.documentElement.setAttribute('data-theme', 'light')
+    }
+  }, [])
+
+  return <HeaderThemeContext.Provider value={{ headerTheme, setHeaderTheme }}>{children}</HeaderThemeContext.Provider>
 }
 
 export const useHeaderTheme = (): ContextType => use(HeaderThemeContext)

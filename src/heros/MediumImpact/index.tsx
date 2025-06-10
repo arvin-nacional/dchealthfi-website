@@ -5,7 +5,7 @@ import type { Page } from '@/payload-types'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
-export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+export const MediumImpactHero: React.FC<Page['hero']> = ({ media, richText }) => {
   return (
     <div
       className="relative -mt-[6rem] flex items-center justify-center text-white"

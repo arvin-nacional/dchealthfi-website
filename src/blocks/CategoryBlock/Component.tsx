@@ -14,6 +14,7 @@ import {
   FileIcon,
   FileSpreadsheet,
   Globe,
+  Building2,
 } from 'lucide-react'
 
 import { CategoryBlock as CategoryBlockType } from '@/payload-types'
@@ -34,12 +35,14 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories
       'teal-400': 'text-teal-400',
       'pink-400': 'text-pink-400',
     }
-    
-    const iconProps = { 
-      className: `w-12 h-12 ${colorClassMap[colorClass] || 'text-blue-400'} mx-auto mb-4` 
+
+    const iconProps = {
+      className: `w-12 h-12 ${colorClassMap[colorClass] || 'text-blue-400'} mx-auto mb-4`,
     }
 
     switch (icon) {
+      case 'Building':
+        return <Building2 {...iconProps} />
       case 'Heart':
         return <Heart {...iconProps} />
       case 'Shield':
@@ -76,34 +79,34 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories
   const buildLink = (link: any): any => {
     if (!link) return null
 
-    let linkProps = {
-      newTab: link.newTab
+    const linkProps = {
+      newTab: link.newTab,
     }
-    
+
     if (link.type === 'page' && link.page) {
       return {
         type: 'reference' as const,
         reference: {
           relationTo: 'pages' as const,
-          value: link.page
+          value: link.page,
         },
-        ...linkProps
+        ...linkProps,
       }
     } else if (link.type === 'flyer' && link.flyer) {
       // For flyers, just use a custom URL to avoid typing issues
       return {
         type: 'custom' as const,
         url: `/flyers/${link.flyer.slug}`,
-        ...linkProps
+        ...linkProps,
       }
     } else if (link.type === 'custom') {
       return {
         type: 'custom' as const,
         url: link.url,
-        ...linkProps
+        ...linkProps,
       }
     }
-    
+
     return null
   }
 
