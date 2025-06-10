@@ -31,7 +31,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="absolute left-0 top-full w-full md:hidden bg-[#0c2252] border-b border-blue-900 z-50">
-          <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+          <nav className="container px-4 py-4 flex flex-col space-y-4">
             {navItems.map(({ link }, i) => (
               <span key={i} onClick={() => setIsMenuOpen(false)} className="block">
                 <CMSLink

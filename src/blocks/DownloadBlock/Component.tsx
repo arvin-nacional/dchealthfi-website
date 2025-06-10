@@ -186,7 +186,7 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                             )}
                           </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 max-sm:flex-col max-sm:items-right">
                           {fileType === 'video' && (
                             <WatchButton
                               asset={{

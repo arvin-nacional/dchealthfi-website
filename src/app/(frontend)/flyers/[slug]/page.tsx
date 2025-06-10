@@ -98,11 +98,11 @@ export default async function Flyer({ params: paramsPromise }: Args) {
       <div className="container">
         <header className="mb-8">
           <Link
-            href="/"
+            href="/products"
             className="inline-flex items-center gap-2 text-sm text-gray-800 hover:text-blue-400 mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            Back to Products
           </Link>
         </header>
 
