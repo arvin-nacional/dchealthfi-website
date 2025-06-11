@@ -1,10 +1,12 @@
 import type { Block } from 'payload'
 
-import {
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+// Remove unused imports
+// If these might be needed in the future, you can keep them by prefixing with underscore
+// import {
+//   HeadingFeature as _HeadingFeature,
+//   InlineToolbarFeature as _InlineToolbarFeature,
+//   lexicalEditor as _lexicalEditor,
+// } from '@payloadcms/richtext-lexical'
 
 export const FlyersBlock: Block = {
   slug: 'flyers',

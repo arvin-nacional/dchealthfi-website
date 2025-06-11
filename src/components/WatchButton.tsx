@@ -93,7 +93,7 @@ export function WatchButton({ asset }: WatchButtonProps) {
           </DialogHeader>
           <div className="w-full" ref={videoPlayerRef}>
             <Media
-              // @ts-ignore
+              // @ts-expect-error Media component expects a different resource type
               resource={asset.resource}
               size="full"
               className="w-full h-auto rounded-lg overflow-hidden"

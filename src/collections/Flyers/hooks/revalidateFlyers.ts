@@ -4,13 +4,14 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 export const revalidateFlyers: CollectionAfterChangeHook = async ({
   doc,
   req,
-  operation,
-}: {
-  doc: { slug: string; [key: string]: any }
-  req: any
-  operation: string
+  // Prefix with underscore to mark as unused
+  operation: _operation,
 }) => {
-  if (req.payload.config.serverURL && req.payload.config.clientURL) {
+  // Type assertion to avoid TypeScript errors
+  const typedDoc = doc as { slug: string }
+  
+  // Only check for serverURL as clientURL might not be available in SanitizedConfig type
+  if (req.payload.config.serverURL) {
     try {
       const serverURL = `${req.payload.config.serverURL}`
       const res = await fetch(`${serverURL}/api/revalidate-pages`, {
@@ -20,7 +21,7 @@ export const revalidateFlyers: CollectionAfterChangeHook = async ({
         },
         body: JSON.stringify({
           collection: 'flyers',
-          slug: doc.slug,
+          slug: typedDoc.slug,
           secret: process.env.REVALIDATION_KEY,
         }),
       })
