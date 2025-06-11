@@ -17,16 +17,6 @@ interface Asset {
   size?: string
 }
 
-// Define a type for media resources to avoid using 'any'
-interface MediaResource {
-  id?: string;
-  url?: string;
-  mimeType?: string;
-  filename?: string;
-  filesize?: number;
-  [key: string]: unknown;
-}
-
 export const DownloadBlock: React.FC<DownloadBlockType> = ({
   title,
   description,

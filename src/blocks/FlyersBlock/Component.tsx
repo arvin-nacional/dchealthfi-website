@@ -4,9 +4,7 @@ import { getPayload } from 'payload'
 import React, { Suspense, cache } from 'react'
 import FlyerCard from '@/components/FlyerCard'
 import Filters from '@/components/Filters'
-import LocalSearchbar from '@/components/LocalSearchBar'
 import PaginationQuery from '@/components/PaginationQuery'
-// Next.js revalidation configuration for this component
 
 // Set a longer revalidation time to improve performance
 export const revalidate = 3600 // Revalidate every hour instead of every 10 seconds
@@ -79,7 +77,14 @@ const getFlyers = cache(
       return fetchedFlyers
     } catch (error) {
       console.error('Error fetching flyers:', error)
-      return { docs: [], totalPages: 0, totalDocs: 0, page: pageNumber, hasPrevPage: false, hasNextPage: false }
+      return {
+        docs: [],
+        totalPages: 0,
+        totalDocs: 0,
+        page: pageNumber,
+        hasPrevPage: false,
+        hasNextPage: false,
+      }
     }
   },
 )
@@ -93,7 +98,7 @@ const getCategories = cache(async () => {
     // Categories are small and don't change often, so we can fetch them all
     const fetchedCategories = await payload.find({
       collection: 'categories',
-      depth: 0,  // We don't need nested data for categories
+      depth: 0, // We don't need nested data for categories
       limit: 100, // Reasonable upper limit
       // Only fetch fields we need for rendering
       sort: 'title', // Sort by title for a consistent order
@@ -124,18 +129,18 @@ export const FlyersBlock: React.FC<
   const pageNumber = searchParams?.page ? parseInt(searchParams.page, 10) : 1
 
   let flyers: Flyer[] = []
-  let categoriesArr: Category[] = []
+  const categoriesArr: Category[] = []
   let totalPages = 1
   const currentPage = pageNumber || 1
 
   // Data fetching code with improved error handling and performance
   if (populateBy === 'collection') {
     let categoryID: string | undefined
-    
+
     // Prefetch categories first since we need them for category filtering
     // This also allows better caching of categories separately from flyers
     const categoriesArr = await getCategories()
-    
+
     if (categoryTitle) {
       // Get category ID from title if needed
       const matchedCategory = categoriesArr.find((cat) => cat.title === categoryTitle)
@@ -151,12 +156,10 @@ export const FlyersBlock: React.FC<
       categoryID,
       searchQuery,
       categoryFilter: categories
-        ? (categories
-            .map((c) => (typeof c === 'string' ? c : c.id))
-            .filter(Boolean) as string[])
+        ? (categories.map((c) => (typeof c === 'string' ? c : c.id)).filter(Boolean) as string[])
         : undefined,
     })
-    
+
     flyers = fetchedFlyers.docs
     totalPages = fetchedFlyers.totalPages || 1
   } else if (selectedDocs?.length) {
@@ -194,9 +197,7 @@ export const FlyersBlock: React.FC<
       <Suspense fallback={<FlyersLoadingState />}>
         <div className="container grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 content-center">
           {flyers.length > 0 ? (
-            flyers.map((flyer) => (
-              <FlyerCard key={flyer.id} flyer={flyer} />
-            ))
+            flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
           ) : (
             <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
               <h3 className="text-xl font-medium">No flyers found</h3>
