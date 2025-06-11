@@ -129,7 +129,7 @@ export const FlyersBlock: React.FC<
   const pageNumber = searchParams?.page ? parseInt(searchParams.page, 10) : 1
 
   let flyers: Flyer[] = []
-  const categoriesArr: Category[] = []
+  let categoriesArr: Category[] = []
   let totalPages = 1
   const currentPage = pageNumber || 1
 
@@ -139,7 +139,7 @@ export const FlyersBlock: React.FC<
 
     // Prefetch categories first since we need them for category filtering
     // This also allows better caching of categories separately from flyers
-    const categoriesArr = await getCategories()
+    categoriesArr = await getCategories()
 
     if (categoryTitle) {
       // Get category ID from title if needed
