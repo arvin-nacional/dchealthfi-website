@@ -10,6 +10,9 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { FlyersBlock } from '../../blocks/FlyersBlock/config'
 import { CategoryBlock } from '../../blocks/CategoryBlock/config'
 import { DownloadBlock } from '../../blocks/DownloadBlock/config'
+import { MissionVisionBlock } from '../../blocks/MissionVisionBlock/config'
+import { AdvantagesBlock } from '../../blocks/AdvantagesBlock/config'
+import { AboutBlock } from '../../blocks/AboutBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -87,6 +90,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 FlyersBlock,
                 CategoryBlock,
                 DownloadBlock,
+                MissionVisionBlock,
+                AdvantagesBlock,
+                AboutBlock,
               ],
               required: true,
               admin: {

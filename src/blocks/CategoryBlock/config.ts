@@ -12,6 +12,14 @@ export const CategoryBlock: Block = {
       defaultValue: 'File Categories',
     },
     {
+      name: 'description',
+      type: 'textarea',
+      required: false,
+      label: 'Description',
+      defaultValue:
+        'This collection represents our company’s official digital materials crafted to maintain consistency, strengthen our identity, and support your communication needs.',
+    },
+    {
       name: 'categories',
       type: 'array',
       required: true,

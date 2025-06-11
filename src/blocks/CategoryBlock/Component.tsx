@@ -22,11 +22,15 @@ import { CategoryBlock as CategoryBlockType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Card, CardContent } from '@/components/ui/card'
 
-export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories }) => {
+export const CategoryBlock: React.FC<CategoryBlockType> = ({
+  heading,
+  description,
+  categories,
+}) => {
   const getIcon = (icon: string, colorClass: string) => {
     // Map of color classes to avoid dynamic class names that Tailwind might purge
     const colorClassMap: Record<string, string> = {
-      'red-400': 'text-red-400',
+      'red-400': 'text-red-700',
       'blue-400': 'text-blue-400',
       'green-400': 'text-green-400',
       'yellow-400': 'text-yellow-400',
@@ -80,21 +84,23 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories
    * Build link object compatible with CMSLink component
    * @param link The link data from PayloadCMS
    */
-  const buildLink = (link: unknown): {
-    type: 'reference' | 'custom';
-    reference?: { relationTo: 'pages'; value: string };
-    url?: string;
-    newTab?: boolean;
+  const buildLink = (
+    link: unknown,
+  ): {
+    type: 'reference' | 'custom'
+    reference?: { relationTo: 'pages'; value: string }
+    url?: string
+    newTab?: boolean
   } | null => {
     if (!link) return null
 
     // Type assertion to safely access link properties
     const typedLink = link as {
-      type?: string;
-      newTab?: boolean;
-      page?: string;
-      flyer?: { slug: string };
-      url?: string;
+      type?: string
+      newTab?: boolean
+      page?: string
+      flyer?: { slug: string }
+      url?: string
     }
 
     const linkProps = {
@@ -129,8 +135,12 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories
   }
 
   return (
-    <div className="mb-16">
-      <h2 className="text-3xl font-bold text-center mb-12 text-white">{heading}</h2>
+    <div className="py-20 bg-slate-50">
+      <div className="max-w-3xl mx-auto text-center mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">{heading}</h2>
+        <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
+        <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
+      </div>
       <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {(categories || []).map((category, i: number) => {
           const linkProps = buildLink(category.link)
@@ -138,21 +148,21 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories
           return (
             <Card
               key={i}
-              className="bg-slate-800 border-slate-700 transition-transform hover:-translate-y-1 cursor-pointer"
+              className="bg-white border-red-100 hover:shadow-lg transition-all duration-300"
             >
               {linkProps ? (
                 <CMSLink {...linkProps} appearance="inline">
                   <CardContent className="p-6 text-center">
                     {getIcon(category.icon, category.iconColor)}
-                    <h3 className="font-semibold mb-2 text-white">{category.title}</h3>
-                    <p className="text-sm text-slate-300">{category.description}</p>
+                    <h3 className="font-semibold mb-2 text-gray-800">{category.title}</h3>
+                    <p className="text-sm text-gray-600">{category.description}</p>
                   </CardContent>
                 </CMSLink>
               ) : (
                 <CardContent className="p-6 text-center">
                   {getIcon(category.icon, category.iconColor)}
-                  <h3 className="font-semibold mb-2 text-white">{category.title}</h3>
-                  <p className="text-sm text-slate-300">{category.description}</p>
+                  <h3 className="font-semibold mb-2 text-gray-800">{category.title}</h3>
+                  <p className="text-sm text-gray-600">{category.description}</p>
                 </CardContent>
               )}
             </Card>

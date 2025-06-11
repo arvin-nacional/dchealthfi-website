@@ -202,6 +202,9 @@ export interface Page {
     | FlyersBlock
     | CategoryBlock
     | DownloadBlock
+    | MissionVisionBlock
+    | AdvantagesBlock
+    | AboutBlock
   )[];
   meta?: {
     title?: string | null;
@@ -823,6 +826,7 @@ export interface Flyer {
  */
 export interface CategoryBlock {
   heading: string;
+  description?: string | null;
   categories: {
     icon:
       | 'Building'
@@ -885,6 +889,55 @@ export interface DownloadBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'downloadBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionVisionBlock".
+ */
+export interface MissionVisionBlock {
+  heading?: string | null;
+  description?: string | null;
+  missionHeading?: string | null;
+  missionContent?: string | null;
+  visionHeading?: string | null;
+  visionContent?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'missionVisionBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AdvantagesBlock".
+ */
+export interface AdvantagesBlock {
+  heading?: string | null;
+  description?: string | null;
+  advantages?:
+    | {
+        icon: 'award' | 'shield' | 'lightbulb' | 'users' | 'clock' | 'chart';
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'advantagesBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutBlock".
+ */
+export interface AboutBlock {
+  heading: string;
+  description?: string | null;
+  images: {
+    image: string | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1184,6 +1237,9 @@ export interface PagesSelect<T extends boolean = true> {
         flyers?: T | FlyersBlockSelect<T>;
         categoryBlock?: T | CategoryBlockSelect<T>;
         downloadBlock?: T | DownloadBlockSelect<T>;
+        missionVisionBlock?: T | MissionVisionBlockSelect<T>;
+        advantagesBlock?: T | AdvantagesBlockSelect<T>;
+        aboutBlock?: T | AboutBlockSelect<T>;
       };
   meta?:
     | T
@@ -1301,6 +1357,7 @@ export interface FlyersBlockSelect<T extends boolean = true> {
  */
 export interface CategoryBlockSelect<T extends boolean = true> {
   heading?: T;
+  description?: T;
   categories?:
     | T
     | {
@@ -1344,6 +1401,54 @@ export interface DownloadBlockSelect<T extends boolean = true> {
       };
   backgroundColor?: T;
   layout?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionVisionBlock_select".
+ */
+export interface MissionVisionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  missionHeading?: T;
+  missionContent?: T;
+  visionHeading?: T;
+  visionContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AdvantagesBlock_select".
+ */
+export interface AdvantagesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  advantages?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutBlock_select".
+ */
+export interface AboutBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

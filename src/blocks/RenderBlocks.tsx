@@ -10,6 +10,9 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { FlyersBlock } from '@/blocks/FlyersBlock/Component'
 import { CategoryBlock } from '@/blocks/CategoryBlock/Component'
 import { DownloadBlock } from '@/blocks/DownloadBlock/Component'
+import { MissionVisionBlock } from '@/blocks/MissionVisionBlock/Component'
+import { AdvantagesBlock } from '@/blocks/AdvantagesBlock/Component'
+import { AboutBlock } from '@/blocks/AboutBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,6 +23,9 @@ const blockComponents = {
   flyers: FlyersBlock,
   categoryBlock: CategoryBlock,
   downloadBlock: DownloadBlock,
+  missionVisionBlock: MissionVisionBlock,
+  advantagesBlock: AdvantagesBlock,
+  aboutBlock: AboutBlock,
 }
 
 export const RenderBlocks: React.FC<{
