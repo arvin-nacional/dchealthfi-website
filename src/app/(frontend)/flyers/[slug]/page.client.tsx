@@ -81,7 +81,7 @@ export function WatchButtonWrapper({ fileObj, label }: WatchButtonWrapperProps) 
     type: 'video',
     resource: fileObj, // Pass the original resource to the VideoPlayer
   }
-  // @ts-ignore
+  // @ts-expect-error
   return <WatchButton asset={videoAsset} />
 }
 

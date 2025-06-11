@@ -76,33 +76,51 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({ heading, categories
     }
   }
 
-  const buildLink = (link: any): any => {
+  /**
+   * Build link object compatible with CMSLink component
+   * @param link The link data from PayloadCMS
+   */
+  const buildLink = (link: unknown): {
+    type: 'reference' | 'custom';
+    reference?: { relationTo: 'pages'; value: string };
+    url?: string;
+    newTab?: boolean;
+  } | null => {
     if (!link) return null
 
-    const linkProps = {
-      newTab: link.newTab,
+    // Type assertion to safely access link properties
+    const typedLink = link as {
+      type?: string;
+      newTab?: boolean;
+      page?: string;
+      flyer?: { slug: string };
+      url?: string;
     }
 
-    if (link.type === 'page' && link.page) {
+    const linkProps = {
+      newTab: typedLink.newTab,
+    }
+
+    if (typedLink.type === 'page' && typedLink.page) {
       return {
         type: 'reference' as const,
         reference: {
           relationTo: 'pages' as const,
-          value: link.page,
+          value: typedLink.page,
         },
         ...linkProps,
       }
-    } else if (link.type === 'flyer' && link.flyer) {
+    } else if (typedLink.type === 'flyer' && typedLink.flyer) {
       // For flyers, just use a custom URL to avoid typing issues
       return {
         type: 'custom' as const,
-        url: `/flyers/${link.flyer.slug}`,
+        url: `/flyers/${typedLink.flyer.slug}`,
         ...linkProps,
       }
-    } else if (link.type === 'custom') {
+    } else if (typedLink.type === 'custom') {
       return {
         type: 'custom' as const,
-        url: link.url,
+        url: typedLink.url,
         ...linkProps,
       }
     }

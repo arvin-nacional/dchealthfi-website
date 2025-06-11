@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Download, File, FileText, ImageIcon, Video, Play } from 'lucide-react'
+import { Download, File, FileText, ImageIcon, Video } from 'lucide-react'
 import type { DownloadBlock as DownloadBlockType } from '@/payload-types'
 
 import { Card, CardContent } from '@/components/ui/card'
@@ -17,12 +17,14 @@ interface Asset {
   size?: string
 }
 
-interface VideoAsset {
-  id: string
-  name: string
-  url: string
-  type: string
-  resource: any // The original media resource
+// Define a type for media resources to avoid using 'any'
+interface MediaResource {
+  id?: string;
+  url?: string;
+  mimeType?: string;
+  filename?: string;
+  filesize?: number;
+  [key: string]: unknown;
 }
 
 export const DownloadBlock: React.FC<DownloadBlockType> = ({
@@ -127,7 +129,7 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
       }
 
       xhr.send()
-    } catch (error) {
+    } catch (_error) {
       toast.dismiss('download-progress')
       toast.error('Download failed. Please try again.')
     }
@@ -194,7 +196,7 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                                 name: fileObj.filename || fileItem.label || 'Video',
                                 url: fileObj.url || '',
                                 type: 'video',
-                                // @ts-ignore
+                                // @ts-expect-error Media component expects a different resource type
                                 resource: fileObj, // Pass the original resource
                               }}
                             />
