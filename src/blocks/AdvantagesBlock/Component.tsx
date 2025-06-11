@@ -56,13 +56,12 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
           {advantages?.map((advantage, index) => (
             <div
               key={index}
-              className="dark:bg-[#0c2252] bg-white p-8 rounded-xl hover:shadow-lg transition-all duration-300 border border-red-100"
+              className="dark:bg-[#0c2252] bg-white p-8 rounded-xl hover:shadow-lg transition-all duration-300 border border-red-100 flex flex-col items-center"
             >
-              <div className="w-24 h-24 rounded-full flex items-center justify-center">
-                {renderIcon(advantage.icon)}
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-800">{advantage.title}</h3>
-              <p className="text-gray-600">{advantage.description}</p>
+              {renderIcon(advantage.icon)}
+
+              <h3 className="text-xl font-bold mb-3 mt-4 text-gray-800">{advantage.title}</h3>
+              <p className="text-gray-600 text-center">{advantage.description}</p>
             </div>
           ))}
         </div>

@@ -898,6 +898,7 @@ export interface MissionVisionBlock {
   heading?: string | null;
   description?: string | null;
   missionHeading?: string | null;
+  media: string | Media;
   missionContent?: string | null;
   visionHeading?: string | null;
   visionContent?: string | null;
@@ -1412,6 +1413,7 @@ export interface MissionVisionBlockSelect<T extends boolean = true> {
   heading?: T;
   description?: T;
   missionHeading?: T;
+  media?: T;
   missionContent?: T;
   visionHeading?: T;
   visionContent?: T;

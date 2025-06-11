@@ -30,6 +30,13 @@ export const MissionVisionBlock: Block = {
       defaultValue: 'Our Mission',
     },
     {
+      name: 'media',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+      label: 'Media',
+    },
+    {
       name: 'missionContent',
       type: 'textarea',
       label: 'Mission Content',
