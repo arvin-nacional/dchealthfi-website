@@ -15,15 +15,6 @@ export const Logo = (props: Props) => {
 
   return (
     /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={98}
-      height={44}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[98px] w-full h-[44px]', className)}
-      src="/dng-white-logo.png"
-    />
+    <h1 className={clsx('text-3xl font-bold text-white', className)}>DCHEALTHFI</h1>
   )
 }

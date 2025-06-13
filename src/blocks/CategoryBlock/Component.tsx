@@ -21,11 +21,13 @@ import { CategoryBlock as CategoryBlockType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Card, CardContent } from '@/components/ui/card'
+import { Media } from '@/components/Media'
 
 export const CategoryBlock: React.FC<CategoryBlockType> = ({
   heading,
   description,
   categories,
+  media,
   backgroundColor,
 }) => {
   const getIcon = (icon: string, colorClass: string) => {
@@ -138,6 +140,10 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
   return (
     <div className={`py-20 ${backgroundColor}`}>
       <div className="max-w-3xl mx-auto text-center mb-16">
+        <div className="w-36 mx-auto mb-6">
+          <Media resource={media} className="max-h-full max-w-full object-contain" fill={false} />
+        </div>
+
         <h2 className="text-3xl md:text-4xl font-bold mb-4">{heading}</h2>
         <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
         <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>

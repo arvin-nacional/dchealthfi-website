@@ -16,6 +16,13 @@ export const CategoryBlock: Block = {
       label: 'Background Color',
     },
     {
+      name: 'media',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+      label: 'Media',
+    },
+    {
       name: 'heading',
       type: 'text',
       required: true,

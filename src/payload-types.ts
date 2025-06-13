@@ -826,6 +826,7 @@ export interface Flyer {
  */
 export interface CategoryBlock {
   backgroundColor: 'bg-slate-50' | 'bg-slate-100';
+  media: string | Media;
   heading: string;
   description?: string | null;
   categories: {
@@ -900,7 +901,6 @@ export interface MissionVisionBlock {
   heading?: string | null;
   description?: string | null;
   missionHeading?: string | null;
-  media: string | Media;
   missionContent?: string | null;
   visionHeading?: string | null;
   visionContent?: string | null;
@@ -1362,6 +1362,7 @@ export interface FlyersBlockSelect<T extends boolean = true> {
  */
 export interface CategoryBlockSelect<T extends boolean = true> {
   backgroundColor?: T;
+  media?: T;
   heading?: T;
   description?: T;
   categories?:
@@ -1419,7 +1420,6 @@ export interface MissionVisionBlockSelect<T extends boolean = true> {
   heading?: T;
   description?: T;
   missionHeading?: T;
-  media?: T;
   missionContent?: T;
   visionHeading?: T;
   visionContent?: T;
