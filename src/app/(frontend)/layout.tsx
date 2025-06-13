@@ -4,6 +4,7 @@ import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
+import NextTopLoader from 'nextjs-toploader'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
@@ -28,6 +29,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
+        <NextTopLoader 
+          color="#3b82f6" 
+          showSpinner={false} 
+          height={3}
+          shadow="0 0 10px rgba(59, 130, 246, 0.7)"
+        />
         <Providers>
           <AdminBar
             adminBarProps={{
