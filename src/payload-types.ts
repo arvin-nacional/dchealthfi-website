@@ -825,6 +825,7 @@ export interface Flyer {
  * via the `definition` "CategoryBlock".
  */
 export interface CategoryBlock {
+  backgroundColor: 'bg-slate-50' | 'bg-slate-100';
   heading: string;
   description?: string | null;
   categories: {
@@ -895,6 +896,7 @@ export interface DownloadBlock {
  * via the `definition` "MissionVisionBlock".
  */
 export interface MissionVisionBlock {
+  backgroundColor: 'bg-slate-50' | 'bg-slate-100';
   heading?: string | null;
   description?: string | null;
   missionHeading?: string | null;
@@ -911,6 +913,7 @@ export interface MissionVisionBlock {
  * via the `definition` "AdvantagesBlock".
  */
 export interface AdvantagesBlock {
+  backgroundColor: 'bg-slate-50' | 'bg-slate-100';
   heading?: string | null;
   description?: string | null;
   advantages?:
@@ -930,6 +933,7 @@ export interface AdvantagesBlock {
  * via the `definition` "AboutBlock".
  */
 export interface AboutBlock {
+  backgroundColor: 'bg-slate-50' | 'bg-slate-100';
   heading: string;
   description?: string | null;
   images: {
@@ -1357,6 +1361,7 @@ export interface FlyersBlockSelect<T extends boolean = true> {
  * via the `definition` "CategoryBlock_select".
  */
 export interface CategoryBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
   heading?: T;
   description?: T;
   categories?:
@@ -1410,6 +1415,7 @@ export interface DownloadBlockSelect<T extends boolean = true> {
  * via the `definition` "MissionVisionBlock_select".
  */
 export interface MissionVisionBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
   heading?: T;
   description?: T;
   missionHeading?: T;
@@ -1425,6 +1431,7 @@ export interface MissionVisionBlockSelect<T extends boolean = true> {
  * via the `definition` "AdvantagesBlock_select".
  */
 export interface AdvantagesBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
   heading?: T;
   description?: T;
   advantages?:
@@ -1443,6 +1450,7 @@ export interface AdvantagesBlockSelect<T extends boolean = true> {
  * via the `definition` "AboutBlock_select".
  */
 export interface AboutBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
   heading?: T;
   description?: T;
   images?:

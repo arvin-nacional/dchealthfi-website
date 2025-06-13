@@ -7,6 +7,7 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
   heading,
   description,
   advantages,
+  backgroundColor,
 }) => {
   // Function to render the correct icon based on the value type
   const renderIcon = (iconType: string) => {
@@ -44,7 +45,7 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
   }
 
   return (
-    <section className="py-20 dark:bg-[#0a1a3a] bg-slate-100">
+    <section className={`py-20 dark:bg-[#0a1a3a] ${backgroundColor || 'bg-slate-100'}`}>
       <div className="container px-4">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{heading}</h2>

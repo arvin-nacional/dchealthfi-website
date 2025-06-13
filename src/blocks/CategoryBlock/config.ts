@@ -5,6 +5,17 @@ export const CategoryBlock: Block = {
   interfaceName: 'CategoryBlock',
   fields: [
     {
+      name: 'backgroundColor',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'Light Gray (bg-slate-50)', value: 'bg-slate-50' },
+        { label: 'Medium Gray (bg-slate-100)', value: 'bg-slate-100' },
+      ],
+      defaultValue: 'bg-slate-50',
+      label: 'Background Color',
+    },
+    {
       name: 'heading',
       type: 'text',
       required: true,

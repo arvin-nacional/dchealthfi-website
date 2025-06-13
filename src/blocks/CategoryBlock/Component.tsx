@@ -26,6 +26,7 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
   heading,
   description,
   categories,
+  backgroundColor,
 }) => {
   const getIcon = (icon: string, colorClass: string) => {
     // Map of color classes to avoid dynamic class names that Tailwind might purge
@@ -135,7 +136,7 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
   }
 
   return (
-    <div className="py-20 bg-slate-50">
+    <div className={`py-20 ${backgroundColor}`}>
       <div className="max-w-3xl mx-auto text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">{heading}</h2>
         <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
