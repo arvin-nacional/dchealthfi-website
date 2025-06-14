@@ -39,8 +39,6 @@ export const Flyers: CollectionConfig<'flyers'> = {
     category: true,
     flyerImage: true,
     downloadableFiles: true,
-    viewableFiles: true,
-    videos: true,
   },
   hooks: {
     afterChange: [revalidateFlyers],
