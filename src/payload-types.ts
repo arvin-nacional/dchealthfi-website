@@ -792,21 +792,6 @@ export interface Flyer {
         id?: string | null;
       }[]
     | null;
-  viewableFiles?:
-    | {
-        file: string | Media;
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  videos?:
-    | {
-        video: string | Media;
-        thumbnail: string | Media;
-        title: string;
-        id?: string | null;
-      }[]
-    | null;
   meta?: {
     title?: string | null;
     /**
@@ -1509,21 +1494,6 @@ export interface FlyersSelect<T extends boolean = true> {
     | {
         file?: T;
         label?: T;
-        id?: T;
-      };
-  viewableFiles?:
-    | T
-    | {
-        file?: T;
-        label?: T;
-        id?: T;
-      };
-  videos?:
-    | T
-    | {
-        video?: T;
-        thumbnail?: T;
-        title?: T;
         id?: T;
       };
   meta?:

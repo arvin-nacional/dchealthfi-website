@@ -143,54 +143,6 @@ export const Flyers: CollectionConfig<'flyers'> = {
                 },
               ],
             },
-            {
-              name: 'viewableFiles',
-              type: 'array',
-              label: 'Viewable Files',
-              fields: [
-                {
-                  name: 'file',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'label',
-                  type: 'text',
-                  required: true,
-                },
-              ],
-            },
-            {
-              name: 'videos',
-              type: 'array',
-              label: 'Videos',
-              fields: [
-                {
-                  name: 'video',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                  filterOptions: {
-                    mimeType: { contains: 'video' },
-                  },
-                },
-                {
-                  name: 'thumbnail',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                  filterOptions: {
-                    mimeType: { contains: 'image' },
-                  },
-                },
-                {
-                  name: 'title',
-                  type: 'text',
-                  required: true,
-                },
-              ],
-            },
           ],
           label: 'Files',
         },
