@@ -2,14 +2,15 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Footer } from '@/payload-types'
+import type { Footer as FooterType } from '@/payload-types'
 
 // import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 
 export async function Footer() {
-  const footerData: Footer = await getCachedGlobal('footer', 1)()
+  // Type assertion to any to avoid type errors due to API structure differences
+  const footerData: any = await getCachedGlobal('footer', 1)()
 
   const navItems = footerData?.navItems || []
 
@@ -23,8 +24,13 @@ export async function Footer() {
         <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
           {/* <ThemeSelector /> */}
           <nav className="flex flex-col md:flex-row gap-4">
-            {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
+            {navItems.map((item: any, i: number) => {
+              // Handle both Footer and Header navItem structures
+              // Each item could be from Footer format (direct link property) or Header format (singleLink.link)
+              const linkData = item.link ? item.link : 
+                             (item.singleLink && item.singleLink.link) ? item.singleLink.link : null;
+              
+              return linkData ? <CMSLink className="text-white" key={i} {...linkData} /> : null;
             })}
           </nav>
         </div>
