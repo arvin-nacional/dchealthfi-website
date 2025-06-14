@@ -55,8 +55,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header
       className={cn(
-        'z-20 sticky top-0 px-12 transition-colors duration-300',
-        scrolled ? 'bg-[#1a1a1a] shadow-md' : 'bg-transparent',
+        'z-20 sticky top-0 px-12 max-sm:px-6 transition-colors duration-300',
+        scrolled ? 'bg-[#1a1a1a] shadow-md' : 'max-md:bg-[#1a1a1a] bg-transparent',
       )}
       {...(theme ? { 'data-theme': theme } : {})}
     >

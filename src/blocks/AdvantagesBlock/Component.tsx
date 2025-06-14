@@ -53,7 +53,7 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
           <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 max-md:grid-cols-1 lg:grid-cols-4 gap-8">
           {advantages?.map((advantage, index) => (
             <div
               key={index}

@@ -13,9 +13,59 @@ export const Header: GlobalConfig = {
       name: 'navItems',
       type: 'array',
       fields: [
-        link({
-          appearances: false,
-        }),
+        {
+          name: 'type',
+          type: 'select',
+          defaultValue: 'singleLink',
+          options: [
+            {
+              label: 'Single Link',
+              value: 'singleLink',
+            },
+            {
+              label: 'Dropdown Menu',
+              value: 'dropdown',
+            },
+          ],
+          admin: {
+            width: '50%',
+          },
+        },
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: {
+            width: '50%',
+            condition: (_, siblingData) => siblingData?.type === 'dropdown',
+          },
+        },
+        {
+          name: 'singleLink',
+          type: 'group',
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'singleLink',
+          },
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ],
+        },
+        {
+          name: 'dropdownLinks',
+          type: 'array',
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'dropdown',
+            initCollapsed: true,
+          },
+          maxRows: 12,
+        },
       ],
       maxRows: 6,
       admin: {
