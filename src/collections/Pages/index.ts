@@ -13,6 +13,7 @@ import { DownloadBlock } from '../../blocks/DownloadBlock/config'
 import { MissionVisionBlock } from '../../blocks/MissionVisionBlock/config'
 import { AdvantagesBlock } from '../../blocks/AdvantagesBlock/config'
 import { AboutBlock } from '../../blocks/AboutBlock/config'
+import { TitleBlock } from '../../blocks/TitleBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -93,6 +94,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MissionVisionBlock,
                 AdvantagesBlock,
                 AboutBlock,
+                TitleBlock,
               ],
               required: true,
               admin: {

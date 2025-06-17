@@ -205,6 +205,7 @@ export interface Page {
     | MissionVisionBlock
     | AdvantagesBlock
     | AboutBlock
+    | TitleBlock
   )[];
   meta?: {
     title?: string | null;
@@ -811,8 +812,8 @@ export interface Flyer {
  */
 export interface CategoryBlock {
   backgroundColor: 'bg-slate-50' | 'bg-slate-100';
-  media: string | Media;
-  heading: string;
+  media?: (string | null) | Media;
+  heading?: string | null;
   description?: string | null;
   categories: {
     icon:
@@ -928,6 +929,19 @@ export interface AboutBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'aboutBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TitleBlock".
+ */
+export interface TitleBlock {
+  backgroundColor: 'bg-slate-50' | 'bg-slate-100';
+  media?: (string | null) | Media;
+  heading: string;
+  description: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'titleBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1230,6 +1244,7 @@ export interface PagesSelect<T extends boolean = true> {
         missionVisionBlock?: T | MissionVisionBlockSelect<T>;
         advantagesBlock?: T | AdvantagesBlockSelect<T>;
         aboutBlock?: T | AboutBlockSelect<T>;
+        titleBlock?: T | TitleBlockSelect<T>;
       };
   meta?:
     | T
@@ -1444,6 +1459,18 @@ export interface AboutBlockSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TitleBlock_select".
+ */
+export interface TitleBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  media?: T;
+  heading?: T;
+  description?: T;
   id?: T;
   blockName?: T;
 }
