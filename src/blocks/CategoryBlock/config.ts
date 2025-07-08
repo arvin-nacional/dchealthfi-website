@@ -16,6 +16,17 @@ export const CategoryBlock: Block = {
       label: 'Background Color',
     },
     {
+      name: 'layout',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'Grid Columns', value: 'columns' },
+        { label: 'Flex Center', value: 'flex-center' },
+      ],
+      defaultValue: 'columns',
+      label: 'Layout Style',
+    },
+    {
       name: 'media',
       type: 'upload',
       relationTo: 'media',

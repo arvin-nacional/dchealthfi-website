@@ -812,6 +812,7 @@ export interface Flyer {
  */
 export interface CategoryBlock {
   backgroundColor: 'bg-slate-50' | 'bg-slate-100';
+  layout: 'columns' | 'flex-center';
   media?: (string | null) | Media;
   heading?: string | null;
   description?: string | null;
@@ -1362,6 +1363,7 @@ export interface FlyersBlockSelect<T extends boolean = true> {
  */
 export interface CategoryBlockSelect<T extends boolean = true> {
   backgroundColor?: T;
+  layout?: T;
   media?: T;
   heading?: T;
   description?: T;

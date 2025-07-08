@@ -29,6 +29,7 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
   categories,
   media,
   backgroundColor,
+  layout,
 }) => {
   const getIcon = (icon: string, colorClass: string) => {
     // Map of color classes to avoid dynamic class names that Tailwind might purge
@@ -137,6 +138,17 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
     return null
   }
 
+  // Determine the layout class based on the selected layout option
+  const getLayoutClass = () => {
+    switch (layout) {
+      case 'flex-center':
+        return 'container flex flex-wrap justify-center gap-6'
+      case 'columns':
+      default:
+        return 'container grid md:grid-cols-2 lg:grid-cols-4 gap-6'
+    }
+  }
+
   return (
     <div className={`py-20 ${backgroundColor}`}>
       <div className="max-w-3xl mx-auto text-center mb-16">
@@ -150,14 +162,14 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
         <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
         <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
       </div>
-      <div className="container grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className={getLayoutClass()}>
         {(categories || []).map((category, i: number) => {
           const linkProps = buildLink(category.link)
 
           return (
             <Card
               key={i}
-              className="bg-white border-red-100 hover:shadow-lg transition-all duration-300"
+              className={`bg-white border-red-100 hover:shadow-lg transition-all duration-300 ${layout === 'flex-center' ? 'w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]' : ''}`}
             >
               {linkProps ? (
                 <CMSLink {...linkProps} appearance="inline">
