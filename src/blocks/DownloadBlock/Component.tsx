@@ -135,7 +135,9 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
         <div className="space-y-8">
           {(fileGroups || []).map((group, groupIndex) => (
             <div key={groupIndex} className="space-y-4">
-              <h3 className="text-xl font-medium text-gray-800 border-b pb-2">{group.groupTitle}</h3>
+              <h3 className="text-xl font-medium text-gray-800 border-b pb-2">
+                {group.groupTitle}
+              </h3>
 
               <div className={`${layout === 'grid' ? 'grid md:grid-cols-2 gap-4' : 'space-y-4'}`}>
                 {(group.downloadableFiles || []).map((fileItem, i) => {
@@ -166,14 +168,16 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                   }
 
                   return (
-                    <Card key={`${groupIndex}-${i}`} className="overflow-hidden">
+                    <Card key={`${groupIndex}-${i}`} className="overflow-hidden bg-white">
                       <CardContent className="p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className={`${getFileTypeColor(fileType)} p-3 rounded-lg`}>
                             {getFileIcon(fileType)}
                           </div>
                           <div>
-                            <h3 className="font-medium text-gray-800">{fileItem.label || fileName}</h3>
+                            <h3 className="font-medium text-gray-800">
+                              {fileItem.label || fileName}
+                            </h3>
                             {formattedSize && (
                               <p className="text-sm text-gray-500">{formattedSize}</p>
                             )}
