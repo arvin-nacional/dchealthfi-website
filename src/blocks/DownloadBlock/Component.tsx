@@ -197,12 +197,15 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                             />
                           )}
                           {fileType === 'application' && (
-                            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-                              <Eye className="w-4 h-4 mr-2" />
-                              <Link href={asset.url} target="_blank">
+                            <Link href={asset.url} target="_blank">
+                              <Button
+                                size="sm"
+                                className="bg-blue-600 hover:bg-blue-700 text-white"
+                              >
+                                <Eye className="w-4 h-4 mr-2" />
                                 View
-                              </Link>
-                            </Button>
+                              </Button>
+                            </Link>
                           )}
                           <Button
                             onClick={(e) => handleDownload(asset, e)}

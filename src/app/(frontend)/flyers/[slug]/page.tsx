@@ -160,12 +160,12 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                     </div>
                     <div className="flex items-center gap-2">
                       {(fileType === 'application' || fileType === 'image') && fileObj?.url && (
-                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-                          <Eye className="w-4 h-4 mr-2" />
-                          <Link href={fileObj.url} target="_blank">
+                        <Link href={fileObj.url} target="_blank">
+                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                            <Eye className="w-4 h-4 mr-2" />
                             View
-                          </Link>
-                        </Button>
+                          </Button>
+                        </Link>
                       )}
                       <WatchButtonWrapper fileObj={fileObj} label={fileItem.label} />
                       <DownloadButtonWrapper fileObj={fileObj} label={fileItem.label} />
