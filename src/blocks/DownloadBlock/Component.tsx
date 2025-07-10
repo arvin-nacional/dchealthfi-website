@@ -1,13 +1,14 @@
 'use client'
 
 import React from 'react'
-import { Download, File, FileText, ImageIcon, Video } from 'lucide-react'
+import { Download, Eye, File, FileText, ImageIcon, Video } from 'lucide-react'
 import type { DownloadBlock as DownloadBlockType } from '@/payload-types'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { WatchButton } from '@/components/WatchButton'
+import Link from 'next/link'
 
 interface Asset {
   id: string
@@ -190,6 +191,14 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
                                 resource: fileObj, // Pass the original resource
                               }}
                             />
+                          )}
+                          {fileType === 'application' && (
+                            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                              <Eye className="w-4 h-4 mr-2" />
+                              <Link href={asset.url} target="_blank">
+                                View
+                              </Link>
+                            </Button>
                           )}
                           <Button
                             onClick={(e) => handleDownload(asset, e)}

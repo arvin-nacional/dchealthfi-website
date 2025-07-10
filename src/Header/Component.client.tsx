@@ -25,7 +25,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY
-      if (scrollPosition > 25) {
+      if (scrollPosition > 1) {
         setScrolled(true)
       } else {
         setScrolled(false)

@@ -5,13 +5,14 @@ import configPromise from '@payload-config'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
-import { ArrowLeft, File, FileText, ImageIcon, Video } from 'lucide-react'
+import { ArrowLeft, Eye, File, FileText, ImageIcon, Video } from 'lucide-react'
 import RichText from '@/components/RichText'
 import { DownloadButtonWrapper, WatchButtonWrapper } from './page.client'
 import { generateMeta } from '@/utilities/generateMeta'
 import { Metadata } from 'next'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -139,7 +140,7 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                 const fileName = fileObj?.filename || 'File'
 
                 // Determine file type from mimeType
-                const fileType = mimeType.split('/')[0] || 'unknown'
+                const fileType: string = mimeType.split('/')[0] || 'unknown'
 
                 return (
                   <div
@@ -158,6 +159,14 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
+                      {(fileType === 'application' || fileType === 'image') && fileObj?.url && (
+                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                          <Eye className="w-4 h-4 mr-2" />
+                          <Link href={fileObj.url} target="_blank">
+                            View
+                          </Link>
+                        </Button>
+                      )}
                       <WatchButtonWrapper fileObj={fileObj} label={fileItem.label} />
                       <DownloadButtonWrapper fileObj={fileObj} label={fileItem.label} />
                     </div>

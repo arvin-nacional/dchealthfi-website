@@ -19,7 +19,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockType> = ({
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{heading}</h2>
           <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
+          <p className="text-lg text-gray-800 dark:text-gray-300">{description}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -27,14 +27,14 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockType> = ({
             <Target className="h-12 w-12 text-red-700 mb-6" />
             <h2 className="text-2xl font-bold mb-4">{missionHeading}</h2>
             <div className="w-20 h-1 bg-red-700 mb-6"></div>
-            <p className="text-gray-600 dark:text-gray-300">{missionContent}</p>
+            <p className="text-gray-800 dark:text-gray-300">{missionContent}</p>
           </div>
           <div className=" bg-white p-8 rounded-lg border border-red-100 hover:shadow-lg transition-all duration-300">
             <Lightbulb className="h-12 w-12 text-red-700 mb-6" />
 
             <h2 className="text-2xl font-bold mb-4">{visionHeading}</h2>
             <div className="w-20 h-1 bg-red-700 mb-6"></div>
-            <p className="text-gray-600 dark:text-gray-300">{visionContent}</p>
+            <p className="text-gray-800 dark:text-gray-300">{visionContent}</p>
           </div>
         </div>
       </div>
