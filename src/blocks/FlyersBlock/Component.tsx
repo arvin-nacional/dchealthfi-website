@@ -200,8 +200,8 @@ export const FlyersBlock: React.FC<
             flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
           ) : (
             <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
-              <h3 className="text-xl font-medium">No flyers found</h3>
-              <p className="text-muted-foreground mt-2">Try changing your search criteria</p>
+              <h3 className="text-xl font-medium text-gray-800">No flyers found</h3>
+              <p className="text-muted-foreground text-gray-800 mt-2">Try changing your search criteria</p>
             </div>
           )}
         </div>

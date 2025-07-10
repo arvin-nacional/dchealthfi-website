@@ -158,9 +158,9 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
           </div>
         )}
 
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 max-sm:text-2xl">{heading}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 max-sm:text-2xl">{heading}</h2>
         <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
-        <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
+        <p className="text-lg text-gray-800 dark:text-gray-300">{description}</p>
       </div>
       <div className={getLayoutClass()}>
         {(categories || []).map((category, i: number) => {
@@ -176,14 +176,14 @@ export const CategoryBlock: React.FC<CategoryBlockType> = ({
                   <CardContent className="p-6 text-center">
                     {getIcon(category.icon, category.iconColor)}
                     <h3 className="font-semibold mb-2 text-gray-800">{category.title}</h3>
-                    <p className="text-sm text-gray-600">{category.description}</p>
+                    <p className="text-sm text-gray-800">{category.description}</p>
                   </CardContent>
                 </CMSLink>
               ) : (
                 <CardContent className="p-6 text-center">
                   {getIcon(category.icon, category.iconColor)}
                   <h3 className="font-semibold mb-2 text-gray-800">{category.title}</h3>
-                  <p className="text-sm text-gray-600">{category.description}</p>
+                  <p className="text-sm text-gray-800">{category.description}</p>
                 </CardContent>
               )}
             </Card>

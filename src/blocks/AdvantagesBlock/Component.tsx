@@ -48,9 +48,9 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
     <section className={`py-20 dark:bg-[#0a1a3a] ${backgroundColor || 'bg-slate-100'}`}>
       <div className="container px-4">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{heading}</h2>
+          <h2 className="text-3xl md:text-4xl text-gray-800 font-bold mb-4">{heading}</h2>
           <div className="w-20 h-1 bg-red-700 mx-auto mb-6"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
+          <p className="text-lg text-gray-800 dark:text-gray-300">{description}</p>
         </div>
 
         <div className="grid md:grid-cols-2 max-md:grid-cols-1 lg:grid-cols-4 gap-8">
@@ -62,7 +62,7 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
               {renderIcon(advantage.icon)}
 
               <h3 className="text-xl font-bold mb-3 mt-4 text-gray-800">{advantage.title}</h3>
-              <p className="text-gray-600 text-center">{advantage.description}</p>
+              <p className="text-gray-800 text-center">{advantage.description}</p>
             </div>
           ))}
         </div>
