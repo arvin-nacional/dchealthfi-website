@@ -77,6 +77,7 @@ export const DownloadBlock: React.FC<DownloadBlockType> = ({
 
     try {
       // Create an XMLHttpRequest to track download progress
+
       const xhr = new XMLHttpRequest()
       xhr.open('GET', asset.url, true)
       xhr.responseType = 'blob'
