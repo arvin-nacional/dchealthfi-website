@@ -151,7 +151,7 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
               <Button
                 onClick={handleDownload}
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-white w-full md:w-auto "
+                className="bg-blue-600 hover:bg-blue-700 text-white w-auto"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Download
