@@ -959,11 +959,15 @@ export interface PDFImagesBlock {
    */
   description?: string | null;
   /**
+   * Upload a PDF file for download
+   */
+  pdfFile?: (string | null) | Media;
+  showDownloadButton?: boolean | null;
+  /**
    * Add images extracted from a PDF file
    */
   images: {
     image: string | Media;
-    caption?: string | null;
     id?: string | null;
   }[];
   backgroundColor?: ('bg-white' | 'bg-slate-50' | 'bg-slate-100') | null;
@@ -1512,11 +1516,12 @@ export interface TitleBlockSelect<T extends boolean = true> {
 export interface PDFImagesBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  pdfFile?: T;
+  showDownloadButton?: T;
   images?:
     | T
     | {
         image?: T;
-        caption?: T;
         id?: T;
       };
   backgroundColor?: T;

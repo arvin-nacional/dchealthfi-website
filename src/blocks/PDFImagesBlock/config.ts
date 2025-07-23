@@ -23,6 +23,22 @@ export const PDFImagesBlock: Block = {
       required: false,
     },
     {
+      name: 'pdfFile',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'PDF File',
+      admin: {
+        description: 'Upload a PDF file for download',
+      },
+      required: false,
+    },
+    {
+      name: 'showDownloadButton',
+      type: 'checkbox',
+      label: 'Show Download Button',
+      defaultValue: true,
+    },
+    {
       name: 'images',
       type: 'array',
       label: 'PDF Images',
@@ -36,12 +52,6 @@ export const PDFImagesBlock: Block = {
           relationTo: 'media',
           required: true,
           label: 'Image',
-        },
-        {
-          name: 'caption',
-          type: 'text',
-          label: 'Caption',
-          required: false,
         },
       ],
       required: true,
