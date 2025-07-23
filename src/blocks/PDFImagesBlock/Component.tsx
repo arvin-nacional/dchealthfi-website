@@ -54,8 +54,8 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
                 key={i}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700"
               >
-                <div className="relative aspect-[4/3] w-full">
-                  <Media resource={item.image} className="object-cover w-full h-full" fill={true} />
+                <div>
+                  <Media resource={item.image} className="max-w-full" />
                 </div>
                 {item.caption && (
                   <div className="p-4">
