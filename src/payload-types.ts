@@ -951,21 +951,18 @@ export interface TitleBlock {
  */
 export interface PDFImagesBlock {
   /**
-   * Optional title for the PDF images block
+   * Optional title for the PDF block
    */
   title?: string | null;
   /**
-   * Optional description for the PDF images block
+   * Optional description for the PDF block
    */
   description?: string | null;
   /**
-   * Add images extracted from a PDF file
+   * Upload a PDF file to display
    */
-  images: {
-    image: string | Media;
-    caption?: string | null;
-    id?: string | null;
-  }[];
+  pdfFile: string | Media;
+  showDownloadButton?: boolean | null;
   backgroundColor?: ('bg-white' | 'bg-slate-50' | 'bg-slate-100') | null;
   columnsCount?: ('1' | '2' | '3' | '4') | null;
   id?: string | null;
@@ -1512,13 +1509,8 @@ export interface TitleBlockSelect<T extends boolean = true> {
 export interface PDFImagesBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
+  pdfFile?: T;
+  showDownloadButton?: T;
   backgroundColor?: T;
   columnsCount?: T;
   id?: T;

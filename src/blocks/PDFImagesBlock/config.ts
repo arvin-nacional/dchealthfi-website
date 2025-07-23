@@ -9,7 +9,7 @@ export const PDFImagesBlock: Block = {
       type: 'text',
       label: 'Title',
       admin: {
-        description: 'Optional title for the PDF images block',
+        description: 'Optional title for the PDF block',
       },
       required: false,
     },
@@ -18,33 +18,25 @@ export const PDFImagesBlock: Block = {
       type: 'textarea',
       label: 'Description',
       admin: {
-        description: 'Optional description for the PDF images block',
+        description: 'Optional description for the PDF block',
       },
       required: false,
     },
     {
-      name: 'images',
-      type: 'array',
-      label: 'PDF Images',
-      admin: {
-        description: 'Add images extracted from a PDF file',
-      },
-      fields: [
-        {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
-          label: 'Image',
-        },
-        {
-          name: 'caption',
-          type: 'text',
-          label: 'Caption',
-          required: false,
-        },
-      ],
+      name: 'pdfFile',
+      type: 'upload',
+      relationTo: 'media',
       required: true,
+      label: 'PDF File',
+      admin: {
+        description: 'Upload a PDF file to display',
+      },
+    },
+    {
+      name: 'showDownloadButton',
+      type: 'checkbox',
+      label: 'Show Download Button',
+      defaultValue: true,
     },
     {
       name: 'backgroundColor',
