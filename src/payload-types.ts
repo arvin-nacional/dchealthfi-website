@@ -206,6 +206,7 @@ export interface Page {
     | AdvantagesBlock
     | AboutBlock
     | TitleBlock
+    | PDFImagesBlock
   )[];
   meta?: {
     title?: string | null;
@@ -946,6 +947,33 @@ export interface TitleBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFImagesBlock".
+ */
+export interface PDFImagesBlock {
+  /**
+   * Optional title for the PDF images block
+   */
+  title?: string | null;
+  /**
+   * Optional description for the PDF images block
+   */
+  description?: string | null;
+  /**
+   * Add images extracted from a PDF file
+   */
+  images: {
+    image: string | Media;
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  backgroundColor?: ('bg-white' | 'bg-slate-50' | 'bg-slate-100') | null;
+  columnsCount?: ('1' | '2' | '3' | '4') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pdfImagesBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1246,6 +1274,7 @@ export interface PagesSelect<T extends boolean = true> {
         advantagesBlock?: T | AdvantagesBlockSelect<T>;
         aboutBlock?: T | AboutBlockSelect<T>;
         titleBlock?: T | TitleBlockSelect<T>;
+        pdfImagesBlock?: T | PDFImagesBlockSelect<T>;
       };
   meta?:
     | T
@@ -1473,6 +1502,25 @@ export interface TitleBlockSelect<T extends boolean = true> {
   media?: T;
   heading?: T;
   description?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PDFImagesBlock_select".
+ */
+export interface PDFImagesBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  backgroundColor?: T;
+  columnsCount?: T;
   id?: T;
   blockName?: T;
 }

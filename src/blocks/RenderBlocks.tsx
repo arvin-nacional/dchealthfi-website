@@ -14,6 +14,7 @@ import { MissionVisionBlock } from '@/blocks/MissionVisionBlock/Component'
 import { AdvantagesBlock } from '@/blocks/AdvantagesBlock/Component'
 import { AboutBlock } from '@/blocks/AboutBlock/Component'
 import { TitleBlock } from '@/blocks/TitleBlock/Component'
+import { PDFImagesBlock } from '@/blocks/PDFImagesBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -28,6 +29,7 @@ const blockComponents = {
   advantagesBlock: AdvantagesBlock,
   aboutBlock: AboutBlock,
   titleBlock: TitleBlock,
+  pdfImagesBlock: PDFImagesBlock,
 }
 
 export const RenderBlocks: React.FC<{
