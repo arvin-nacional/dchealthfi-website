@@ -207,6 +207,7 @@ export interface Page {
     | AboutBlock
     | TitleBlock
     | PDFImagesBlock
+    | NumberComparisonBlock
   )[];
   meta?: {
     title?: string | null;
@@ -978,6 +979,19 @@ export interface PDFImagesBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberComparisonBlock".
+ */
+export interface NumberComparisonBlock {
+  /**
+   * The number that users will compare their input against
+   */
+  targetNumber: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'numberComparison';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1279,6 +1293,7 @@ export interface PagesSelect<T extends boolean = true> {
         aboutBlock?: T | AboutBlockSelect<T>;
         titleBlock?: T | TitleBlockSelect<T>;
         pdfImagesBlock?: T | PDFImagesBlockSelect<T>;
+        numberComparison?: T | NumberComparisonBlockSelect<T>;
       };
   meta?:
     | T
@@ -1526,6 +1541,15 @@ export interface PDFImagesBlockSelect<T extends boolean = true> {
       };
   backgroundColor?: T;
   columnsCount?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberComparisonBlock_select".
+ */
+export interface NumberComparisonBlockSelect<T extends boolean = true> {
+  targetNumber?: T;
   id?: T;
   blockName?: T;
 }

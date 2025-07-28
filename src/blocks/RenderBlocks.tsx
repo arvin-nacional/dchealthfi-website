@@ -15,6 +15,7 @@ import { AdvantagesBlock } from '@/blocks/AdvantagesBlock/Component'
 import { AboutBlock } from '@/blocks/AboutBlock/Component'
 import { TitleBlock } from '@/blocks/TitleBlock/Component'
 import { PDFImagesBlock } from '@/blocks/PDFImagesBlock/Component'
+import NumberComparisonBlock from '@/blocks/NumberComparisonBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -30,6 +31,7 @@ const blockComponents = {
   aboutBlock: AboutBlock,
   titleBlock: TitleBlock,
   pdfImagesBlock: PDFImagesBlock,
+  numberComparison: NumberComparisonBlock,
 }
 
 export const RenderBlocks: React.FC<{

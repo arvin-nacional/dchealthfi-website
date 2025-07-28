@@ -15,6 +15,7 @@ import { AdvantagesBlock } from '../../blocks/AdvantagesBlock/config'
 import { AboutBlock } from '../../blocks/AboutBlock/config'
 import { TitleBlock } from '../../blocks/TitleBlock/config'
 import { PDFImagesBlock } from '../../blocks/PDFImagesBlock/config'
+import { NumberComparisonBlock } from '../../blocks/NumberComparisonBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -97,6 +98,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 AboutBlock,
                 TitleBlock,
                 PDFImagesBlock,
+                NumberComparisonBlock,
               ],
               required: true,
               admin: {
