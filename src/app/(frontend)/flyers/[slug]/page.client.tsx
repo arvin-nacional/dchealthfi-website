@@ -3,6 +3,9 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import React, { useEffect } from 'react'
 import { DownloadButton } from '@/components/DownloadButton'
 import { WatchButton } from '@/components/WatchButton'
+import { Button } from '@/components/ui/button'
+import { Download } from 'lucide-react'
+import { toast } from 'sonner'
 
 const PageClient: React.FC = () => {
   /* Always set the header theme to light mode */
@@ -12,6 +15,15 @@ const PageClient: React.FC = () => {
     setHeaderTheme('light')
   }, [setHeaderTheme])
   return <React.Fragment />
+}
+
+interface PdfDownloadButtonWrapperProps {
+  pdfFile: {
+    id?: string
+    url?: string | null
+    filename?: string | null
+    filesize?: number | null
+  } | null
 }
 
 interface DownloadButtonWrapperProps {

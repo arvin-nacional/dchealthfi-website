@@ -786,6 +786,27 @@ export interface Flyer {
     };
     [k: string]: unknown;
   };
+  /**
+   * Upload a PDF file for download
+   */
+  pdfFile?: (string | null) | Media;
+  /**
+   * Add images extracted from the PDF file to display in the Product Info tab
+   */
+  pdfImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of columns for displaying PDF images
+   */
+  pdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
+  /**
+   * Upload a video showcasing the product
+   */
+  productVideo?: (string | null) | Media;
   category: string | Category;
   downloadableFiles?:
     | {
@@ -1570,6 +1591,15 @@ export interface FlyersSelect<T extends boolean = true> {
   slugLock?: T;
   flyerImage?: T;
   description?: T;
+  pdfFile?: T;
+  pdfImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  pdfImagesColumnsCount?: T;
+  productVideo?: T;
   category?: T;
   downloadableFiles?:
     | T

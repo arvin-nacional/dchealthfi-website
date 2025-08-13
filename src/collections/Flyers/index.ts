@@ -109,8 +109,76 @@ export const Flyers: CollectionConfig<'flyers'> = {
               label: 'Description',
               required: true,
             },
+            {
+              name: 'pdfFile',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'PDF File',
+              admin: {
+                description: 'Upload a PDF file for download',
+              },
+            },
+            {
+              name: 'pdfImages',
+              type: 'array',
+              label: 'PDF Images',
+              admin: {
+                description:
+                  'Add images extracted from the PDF file to display in the Product Info tab',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Image',
+                },
+              ],
+            },
+            {
+              name: 'pdfImagesColumnsCount',
+              type: 'select',
+              label: 'PDF Images Columns',
+              defaultValue: '3',
+              admin: {
+                description: 'Number of columns for displaying PDF images',
+              },
+              options: [
+                {
+                  label: '1 Column',
+                  value: '1',
+                },
+                {
+                  label: '2 Columns',
+                  value: '2',
+                },
+                {
+                  label: '3 Columns',
+                  value: '3',
+                },
+                {
+                  label: '4 Columns',
+                  value: '4',
+                },
+              ],
+            },
           ],
-          label: 'Content',
+          label: 'Product Info',
+        },
+        {
+          fields: [
+            {
+              name: 'productVideo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Product Video',
+              admin: {
+                description: 'Upload a video showcasing the product',
+              },
+            },
+          ],
+          label: 'Product Video',
         },
         {
           fields: [
@@ -142,7 +210,7 @@ export const Flyers: CollectionConfig<'flyers'> = {
               ],
             },
           ],
-          label: 'Files',
+          label: 'Product Testimonials',
         },
         {
           name: 'meta',
