@@ -97,4 +97,39 @@ export function WatchButtonWrapper({ fileObj, label }: WatchButtonWrapperProps) 
   return <WatchButton asset={videoAsset} />
 }
 
+interface TestimonialVideoWatchButtonWrapperProps {
+  fileObj: {
+    id?: string
+    url?: string | null
+    mimeType?: string | null
+    filename?: string | null
+    filesize?: number | null
+  } | null
+  label?: string
+}
+
+export function TestimonialVideoWatchButtonWrapper({
+  fileObj,
+  label,
+}: TestimonialVideoWatchButtonWrapperProps) {
+  // Handle null/undefined fileObj or missing URL
+  if (!fileObj || !fileObj.url) return null
+
+  // Check if this is a video file
+  const isVideo =
+    fileObj.mimeType && typeof fileObj.mimeType === 'string' && fileObj.mimeType.includes('video')
+  if (!isVideo) return null
+
+  // Create video asset for the watch button
+  const videoAsset = {
+    id: fileObj.id || 'testimonial-video-id',
+    name: fileObj.filename || label || 'Testimonial Video',
+    url: fileObj.url,
+    type: 'video',
+    resource: fileObj, // Pass the original resource to the VideoPlayer
+  }
+  // @ts-expect-error
+  return <WatchButton asset={videoAsset} />
+}
+
 export default PageClient

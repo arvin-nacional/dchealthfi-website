@@ -183,6 +183,20 @@ export const Flyers: CollectionConfig<'flyers'> = {
         {
           fields: [
             {
+              name: 'testimonialVideo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Testimonial Video',
+              admin: {
+                description: 'Upload a testimonial video for the product',
+              },
+            },
+          ],
+          label: 'Testimonial Video',
+        },
+        {
+          fields: [
+            {
               name: 'category',
               type: 'relationship',
               relationTo: 'categories',

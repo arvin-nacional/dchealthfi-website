@@ -120,10 +120,22 @@ export default async function Flyer({ params: paramsPromise }: Args) {
 
         {/* Tabbed Interface */}
         <Tabs defaultValue="info" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="info">Product Info</TabsTrigger>
-            <TabsTrigger value="video">Product Video</TabsTrigger>
-            <TabsTrigger value="testimonials">Product Testimonials</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto md:h-10">
+            <TabsTrigger value="info" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
+              Info
+            </TabsTrigger>
+            <TabsTrigger value="video" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
+              Video
+            </TabsTrigger>
+            <TabsTrigger
+              value="testimonial-video"
+              className="text-xs md:text-sm px-2 py-2 md:py-1.5"
+            >
+              Testimonial
+            </TabsTrigger>
+            <TabsTrigger value="downloads" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
+              Files
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="info" className="mt-6">
@@ -158,7 +170,7 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                     {flyer.pdfImages.map((item, i) => (
                       <div
                         key={i}
-                        className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700 ${flyer.pdfImagesColumnsCount === '1' ? 'max-w-3xl' : 'max-w-full'} mx-auto`}
+                        className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700 ${flyer.pdfImagesColumnsCount === '1' ? 'max-w-6xl' : 'max-w-full'} mx-auto`}
                       >
                         <div>
                           <Media resource={item.image} className="max-w-full" />
@@ -199,7 +211,38 @@ export default async function Flyer({ params: paramsPromise }: Args) {
             </div>
           </TabsContent>
 
-          <TabsContent value="testimonials" className="mt-6">
+          <TabsContent value="testimonial-video" className="mt-6">
+            <div className="space-y-6">
+              {/* Testimonial Video Download Button */}
+              {flyer.testimonialVideo && (
+                <div className="flex justify-center">
+                  <div className="mt-6">
+                    <DownloadButtonWrapper
+                      fileObj={
+                        typeof flyer.testimonialVideo === 'object' ? flyer.testimonialVideo : null
+                      }
+                      label="Testimonial Video"
+                    />
+                  </div>
+                </div>
+              )}
+              {/* <h2 className="text-2xl font-semibold mb-4">Testimonial Video</h2> */}
+              {flyer.testimonialVideo ? (
+                <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
+                  <Media resource={flyer.testimonialVideo} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="aspect-video w-full rounded-lg bg-gray-100 flex items-center justify-center">
+                  <div className="text-center text-gray-500">
+                    <Video className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <p>No testimonial video available</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="downloads" className="mt-6">
             <div className="space-y-6">
               {flyer.downloadableFiles && flyer.downloadableFiles.length > 0 && (
                 <div>

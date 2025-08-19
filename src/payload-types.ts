@@ -807,6 +807,10 @@ export interface Flyer {
    * Upload a video showcasing the product
    */
   productVideo?: (string | null) | Media;
+  /**
+   * Upload a testimonial video for the product
+   */
+  testimonialVideo?: (string | null) | Media;
   category: string | Category;
   downloadableFiles?:
     | {
@@ -1600,6 +1604,7 @@ export interface FlyersSelect<T extends boolean = true> {
       };
   pdfImagesColumnsCount?: T;
   productVideo?: T;
+  testimonialVideo?: T;
   category?: T;
   downloadableFiles?:
     | T
