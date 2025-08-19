@@ -122,19 +122,19 @@ export default async function Flyer({ params: paramsPromise }: Args) {
         <Tabs defaultValue="info" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto md:h-10">
             <TabsTrigger value="info" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
-              Info
+              Product Info
             </TabsTrigger>
             <TabsTrigger value="video" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
-              Video
+              Product Video
             </TabsTrigger>
             <TabsTrigger
               value="testimonial-video"
               className="text-xs md:text-sm px-2 py-2 md:py-1.5"
             >
-              Testimonial
+              Testimonial Video
             </TabsTrigger>
             <TabsTrigger value="downloads" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
-              Files
+              Testimonial Files
             </TabsTrigger>
           </TabsList>
 
