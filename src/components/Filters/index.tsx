@@ -6,7 +6,8 @@ import { formUrlQuery } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Category } from '@/payload-types'
 import { Button } from '../ui/button'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+
 interface FilterProps {
   categories: Category[]
 }
@@ -14,33 +15,25 @@ interface FilterProps {
 const Filters: React.FC<FilterProps> = ({ categories }) => {
   const searchParams = useSearchParams()
   const router = useRouter()
-  // Add state for active category for optimistic UI updates
-  const [activeCategory, setActiveCategory] = useState<string | null>(searchParams.get('category'))
 
-  // Initialize the active category from URL params
-  useEffect(() => {
-    setActiveCategory(searchParams.get('category'))
-  }, [searchParams])
+  // Memoize the active category to prevent unnecessary re-renders
+  const activeCategory = useMemo(() => searchParams.get('category'), [searchParams])
 
-  const handleUpdateParams = (value: string) => {
-    // Update local state immediately for optimistic UI
-    setActiveCategory(value)
+  // Use useCallback to prevent function recreation on every render
+  const handleUpdateParams = useCallback(
+    (value: string) => {
+      const newUrl: string = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'category',
+        value,
+      })
 
-    // Then update the URL
-    const newUrl: string = formUrlQuery({
-      params: searchParams.toString(),
-      key: 'category',
-      value,
-    })
+      router.push(newUrl, { scroll: false })
+    },
+    [searchParams, router],
+  )
 
-    router.push(newUrl, { scroll: false })
-  }
-
-  const clearCategoryFilter = () => {
-    // Update local state immediately for optimistic UI
-    setActiveCategory(null)
-
-    // Then update the URL
+  const clearCategoryFilter = useCallback(() => {
     const newUrl: string = formUrlQuery({
       params: searchParams.toString(),
       key: 'category',
@@ -48,6 +41,11 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
     })
 
     router.push(newUrl, { scroll: false })
+  }, [searchParams, router])
+
+  // Early return if no categories to prevent unnecessary rendering
+  if (!categories || categories.length === 0) {
+    return null
   }
 
   return (

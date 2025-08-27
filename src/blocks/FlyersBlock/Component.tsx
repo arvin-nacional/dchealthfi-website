@@ -3,8 +3,8 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React, { Suspense, cache } from 'react'
 import FlyerCard from '@/components/FlyerCard'
-import Filters from '@/components/Filters'
 import PaginationQuery from '@/components/PaginationQuery'
+import { Skeleton } from '@/components/ui/skeleton'
 
 // Set a longer revalidation time to improve performance
 export const revalidate = 3600 // Revalidate every hour instead of every 10 seconds
@@ -111,10 +111,59 @@ const getCategories = cache(async () => {
   }
 })
 
-// Import client components from separate files
-import { FlyersSearchBar } from '@/blocks/FlyersBlock/FlyersSearchBar'
-import { FlyersLoadingState } from '@/blocks/FlyersBlock/LoadingState'
-import { Skeleton } from '@/components/ui/skeleton'
+// Lazy load client components to reduce initial bundle size
+const FlyersSearchBar = React.lazy(() =>
+  import('@/blocks/FlyersBlock/FlyersSearchBar').then((module) => ({
+    default: module.FlyersSearchBar,
+  })),
+)
+const Filters = React.lazy(() =>
+  import('@/components/Filters').then((module) => ({ default: module.default })),
+)
+
+// Separate component for flyers grid to enable independent streaming
+const FlyersGrid: React.FC<{
+  flyers: Flyer[]
+  populateBy: 'collection' | 'selection' | null | undefined
+}> = ({ flyers, populateBy }) => {
+  if (populateBy !== 'collection' && !flyers.length) {
+    return null
+  }
+
+  return (
+    <div className="container grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 content-center">
+      {flyers.length > 0 ? (
+        flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
+      ) : (
+        <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
+          <h3 className="text-xl font-medium text-gray-800">No flyers found</h3>
+          <p className="text-muted-foreground text-gray-800 mt-2">
+            Try changing your search criteria
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Separate component for categories to enable independent streaming
+const CategoriesSection: React.FC<{ searchParams: SearchParams | undefined }> = async ({
+  searchParams,
+}) => {
+  const categoriesArr = await getCategories()
+
+  return (
+    <Suspense
+      fallback={
+        <div className="h-12 mb-8">
+          <Skeleton className="h-8 w-full" />
+        </div>
+      }
+    >
+      <Filters categories={categoriesArr} />
+    </Suspense>
+  )
+}
 
 // Main FlyersBlock component (Server Component)
 export const FlyersBlock: React.FC<
@@ -129,7 +178,6 @@ export const FlyersBlock: React.FC<
   const pageNumber = searchParams?.page ? parseInt(searchParams.page, 10) : 1
 
   let flyers: Flyer[] = []
-  let categoriesArr: Category[] = []
   let totalPages = 1
   const currentPage = pageNumber || 1
 
@@ -137,19 +185,16 @@ export const FlyersBlock: React.FC<
   if (populateBy === 'collection') {
     let categoryID: string | undefined
 
-    // Prefetch categories first since we need them for category filtering
-    // This also allows better caching of categories separately from flyers
-    categoriesArr = await getCategories()
-
+    // Only fetch categories if we need category filtering
     if (categoryTitle) {
-      // Get category ID from title if needed
+      const categoriesArr = await getCategories()
       const matchedCategory = categoriesArr.find((cat) => cat.title === categoryTitle)
       if (matchedCategory) {
         categoryID = matchedCategory.id
       }
     }
 
-    // Now fetch flyers with the category ID if available
+    // Fetch flyers with optimized query
     const fetchedFlyers = await getFlyers({
       pageNumber: currentPage,
       limit,
@@ -170,11 +215,11 @@ export const FlyersBlock: React.FC<
 
   return (
     <div className="my-16" id={`block-${id}`}>
-      {/* Optimize layout to prevent layout shifts during loading */}
+      {/* Search and Filter Section - Load independently */}
       <div className="container mb-8">
         <Suspense
           fallback={
-            <div className="w-full h-16 flex justify-center">
+            <div className="w-full h-16 flex justify-center mb-8">
               <Skeleton className="h-12 w-[650px]" />
             </div>
           }
@@ -182,29 +227,25 @@ export const FlyersBlock: React.FC<
           <FlyersSearchBar />
         </Suspense>
 
-        <Suspense
-          fallback={
-            <div className="h-12 mb-8">
-              <Skeleton className="h-8 w-full" />
-            </div>
-          }
-        >
-          <Filters categories={categoriesArr} />
-        </Suspense>
+        {/* Categories load independently and only when needed */}
+        <CategoriesSection searchParams={searchParams} />
       </div>
 
-      {/* Use a more efficient grid layout */}
-      <Suspense fallback={<FlyersLoadingState />}>
-        <div className="container grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 content-center">
-          {flyers.length > 0 ? (
-            flyers.map((flyer) => <FlyerCard key={flyer.id} flyer={flyer} />)
-          ) : (
-            <div className="col-span-full text-center py-12 flex flex-col items-center justify-center w-full">
-              <h3 className="text-xl font-medium text-gray-800">No flyers found</h3>
-              <p className="text-muted-foreground text-gray-800 mt-2">Try changing your search criteria</p>
-            </div>
-          )}
-        </div>
+      {/* Flyers Grid - Prioritize content rendering */}
+      <Suspense
+        fallback={
+          <div className="container grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4 content-center">
+            {Array.from({ length: limit }).map((_, index) => (
+              <div key={index} className="flex flex-col space-y-3">
+                <Skeleton className="h-[180px] w-full rounded-md" />
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            ))}
+          </div>
+        }
+      >
+        <FlyersGrid flyers={flyers} populateBy={populateBy} />
       </Suspense>
 
       {/* Pagination using PaginationQuery component */}
