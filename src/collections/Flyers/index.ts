@@ -169,13 +169,31 @@ export const Flyers: CollectionConfig<'flyers'> = {
         {
           fields: [
             {
-              name: 'productVideo',
-              type: 'upload',
-              relationTo: 'media',
-              label: 'Product Video',
+              name: 'productVideos',
+              type: 'array',
+              label: 'Product Videos',
               admin: {
-                description: 'Upload a video showcasing the product',
+                description: 'Upload videos showcasing the product',
               },
+              fields: [
+                {
+                  name: 'video',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Video File',
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                  label: 'Video Label',
+                  admin: {
+                    description:
+                      'A descriptive label for this video (e.g., "Product Demo", "Installation Guide")',
+                  },
+                },
+              ],
             },
           ],
           label: 'Product Video',

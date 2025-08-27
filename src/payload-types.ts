@@ -804,9 +804,18 @@ export interface Flyer {
    */
   pdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
   /**
-   * Upload a video showcasing the product
+   * Upload videos showcasing the product
    */
-  productVideo?: (string | null) | Media;
+  productVideos?:
+    | {
+        video: string | Media;
+        /**
+         * A descriptive label for this video (e.g., "Product Demo", "Installation Guide")
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Upload a testimonial video for the product
    */
@@ -1603,7 +1612,13 @@ export interface FlyersSelect<T extends boolean = true> {
         id?: T;
       };
   pdfImagesColumnsCount?: T;
-  productVideo?: T;
+  productVideos?:
+    | T
+    | {
+        video?: T;
+        label?: T;
+        id?: T;
+      };
   testimonialVideo?: T;
   category?: T;
   downloadableFiles?:

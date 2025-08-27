@@ -184,27 +184,50 @@ export default async function Flyer({ params: paramsPromise }: Args) {
           </TabsContent>
           <TabsContent value="video" className="mt-6">
             <div className="space-y-6">
-              {/* Video Download Button */}
-              {flyer.productVideo && (
-                <div className="flex justify-center">
-                  <div className="mt-6">
-                    <DownloadButtonWrapper
-                      fileObj={typeof flyer.productVideo === 'object' ? flyer.productVideo : null}
-                      label="Product Video"
-                    />
-                  </div>
-                </div>
-              )}
-              {/* <h2 className="text-2xl font-semibold mb-4">Product Video</h2> */}
-              {flyer.productVideo ? (
-                <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
-                  <Media resource={flyer.productVideo} className="w-full h-full object-cover" />
+              {/* Multiple Videos Section */}
+              {flyer.productVideos && flyer.productVideos.length > 0 ? (
+                <div className="space-y-8">
+                  {flyer.productVideos.map((videoItem, index) => {
+                    const videoObj = typeof videoItem.video === 'object' ? videoItem.video : null
+                    return (
+                      <div key={index} className="space-y-4">
+                        {/* Video Label and Download Button */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {videoItem.label}
+                            </h3>
+                            {videoObj?.filesize && (
+                              <p className="text-sm text-gray-500">
+                                {Math.round(videoObj.filesize / 1024000)} MB
+                              </p>
+                            )}
+                          </div>
+                          <div className="flex gap-2">
+                            {/* <WatchButtonWrapper fileObj={videoObj} label={videoItem.label} /> */}
+                            <DownloadButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                          </div>
+                        </div>
+                        {/* Video Player */}
+                        <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
+                          <Media
+                            resource={videoItem.video}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        {/* Separator line between videos (except for the last one) */}
+                        {index < (flyer.productVideos?.length ?? 0) - 1 && (
+                          <hr className="border-gray-200 dark:border-gray-700" />
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               ) : (
                 <div className="aspect-video w-full rounded-lg bg-gray-100 flex items-center justify-center">
                   <div className="text-center text-gray-500">
                     <Video className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <p>No product video available</p>
+                    <p>No product videos available</p>
                   </div>
                 </div>
               )}
