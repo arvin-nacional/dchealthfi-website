@@ -246,8 +246,8 @@ export default async function Flyer({ params: paramsPromise }: Args) {
             <div className="space-y-6">
               {flyer.downloadableFiles && flyer.downloadableFiles.length > 0 && (
                 <div>
-                  <h2 className="text-2xl font-semibold mb-4">Downloadable Files</h2>
-                  <div className="space-y-2">
+                  <h2 className="text-xl md:text-2xl font-semibold mb-4">Downloadable Files</h2>
+                  <div className="space-y-3 md:space-y-2">
                     {flyer.downloadableFiles.map((fileItem) => {
                       const fileObj = typeof fileItem.file === 'object' ? fileItem.file : null
                       const mimeType = fileObj?.mimeType || ''
@@ -257,36 +257,80 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                       return (
                         <div
                           key={fileItem.id || fileName}
-                          className="bg-blue-50 p-4 rounded-lg flex items-center justify-between hover:bg-blue-100 transition-colors"
+                          className="bg-blue-50 p-3 md:p-4 rounded-lg hover:bg-blue-100 transition-colors"
                         >
-                          <div className="flex items-center gap-3">
-                            <div className={`${getFileTypeColor(fileType)} p-3 rounded-lg`}>
-                              {getFileIcon(fileType)}
+                          {/* Mobile Layout - Stacked */}
+                          <div className="flex flex-col space-y-3 md:hidden">
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={`${getFileTypeColor(fileType)} p-2 rounded-lg flex-shrink-0`}
+                              >
+                                {getFileIcon(fileType)}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-medium text-sm leading-tight">
+                                  {fileItem.label || fileName}
+                                </h3>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {fileObj?.filesize
+                                    ? `${Math.round(fileObj.filesize / 1024000)} MB`
+                                    : ''}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <h3 className="font-medium">{fileItem.label || fileName}</h3>
-                              <p className="text-sm text-gray-500">
-                                {fileObj?.filesize
-                                  ? `${Math.round(fileObj.filesize / 1024000)} MB`
-                                  : ''}
-                              </p>
+                            <div className="flex gap-2 mt-2">
+                              {(fileType === 'application' || fileType === 'image') &&
+                                fileObj?.url && (
+                                  <Link href={fileObj.url} target="_blank">
+                                    <Button
+                                      size="sm"
+                                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    >
+                                      <Eye className="w-4 h-4 md:mr-2" />
+                                      <span className="hidden md:inline">View File</span>
+                                    </Button>
+                                  </Link>
+                                )}
+                              <div className="flex gap-2 items-start">
+                                <WatchButtonWrapper fileObj={fileObj} label={fileItem.label} />
+                                <DownloadButtonWrapper fileObj={fileObj} label={fileItem.label} />
+                              </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            {(fileType === 'application' || fileType === 'image') &&
-                              fileObj?.url && (
-                                <Link href={fileObj.url} target="_blank">
-                                  <Button
-                                    size="sm"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                                  >
-                                    <Eye className="w-4 h-4 mr-2" />
-                                    View
-                                  </Button>
-                                </Link>
-                              )}
-                            <WatchButtonWrapper fileObj={fileObj} label={fileItem.label} />
-                            <DownloadButtonWrapper fileObj={fileObj} label={fileItem.label} />
+
+                          {/* Desktop Layout - Horizontal */}
+                          <div className="hidden md:flex md:items-center md:justify-between">
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={`${getFileTypeColor(fileType)} p-3 rounded-lg flex-shrink-0`}
+                              >
+                                {getFileIcon(fileType)}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-medium">{fileItem.label || fileName}</h3>
+                                <p className="text-sm text-gray-500">
+                                  {fileObj?.filesize
+                                    ? `${Math.round(fileObj.filesize / 1024000)} MB`
+                                    : ''}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              {(fileType === 'application' || fileType === 'image') &&
+                                fileObj?.url && (
+                                  <Link href={fileObj.url} target="_blank">
+                                    <Button
+                                      size="sm"
+                                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    >
+                                      <Eye className="w-4 h-4 md:mr-2" />
+                                      <span className="hidden md:inline">View</span>
+                                    </Button>
+                                  </Link>
+                                )}
+                              <WatchButtonWrapper fileObj={fileObj} label={fileItem.label} />
+                              <DownloadButtonWrapper fileObj={fileObj} label={fileItem.label} />
+                            </div>
                           </div>
                         </div>
                       )
