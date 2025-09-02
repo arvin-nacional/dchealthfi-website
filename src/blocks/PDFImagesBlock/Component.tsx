@@ -166,7 +166,7 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
             {images.map((item, i) => (
               <div
                 key={i}
-                className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700 ${columnsCount === '1' ? 'max-w-3xl' : 'max-w-full'} mx-auto`}
+                className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700 ${columnsCount === '1' ? 'max-w-6xl' : 'max-w-full'} mx-auto`}
               >
                 <div>
                   <Media resource={item.image} className="max-w-full" />
