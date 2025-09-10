@@ -14,6 +14,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card, CardContent } from '@/components/ui/card'
 // import { toast } from 'sonner'
 
 export async function generateStaticParams() {
@@ -186,40 +187,79 @@ export default async function Flyer({ params: paramsPromise }: Args) {
             <div className="space-y-6">
               {/* Multiple Videos Section */}
               {flyer.productVideos && flyer.productVideos.length > 0 ? (
-                <div className="space-y-8">
+                <div className="space-y-4">
                   {flyer.productVideos.map((videoItem, index) => {
                     const videoObj = typeof videoItem.video === 'object' ? videoItem.video : null
+                    if (!videoObj) return null
+
+                    const mimeType = videoObj?.mimeType || ''
+                    const fileName = videoObj?.filename || 'Video'
+                    const fileType = mimeType.split('/')[0] || 'video'
+
+                    // Format file size
+                    let formattedSize = ''
+                    if (videoObj.filesize && typeof videoObj.filesize === 'number') {
+                      const sizeInMB = videoObj.filesize / 1048576 // 1024 * 1024
+                      formattedSize =
+                        sizeInMB >= 1
+                          ? `${sizeInMB.toFixed(2)} MB`
+                          : `${Math.round(videoObj.filesize / 1024)} KB`
+                    }
+
                     return (
-                      <div key={index} className="space-y-4">
-                        {/* Video Label and Download Button */}
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                          <div>
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                              {videoItem.label}
-                            </h3>
-                            {videoObj?.filesize && (
-                              <p className="text-sm text-gray-500">
-                                {Math.round(videoObj.filesize / 1024000)} MB
-                              </p>
-                            )}
+                      <Card key={index} className="overflow-hidden bg-white dark:bg-gray-800">
+                        <CardContent className="p-4">
+                          {/* Mobile Layout - Stacked */}
+                          <div className="flex flex-col space-y-3 md:hidden">
+                            <div className="flex items-center gap-3">
+                              <div className="bg-purple-600 text-white p-2 rounded-lg flex-shrink-0">
+                                <Video className="w-5 h-5" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-medium text-sm leading-tight text-gray-800 dark:text-white">
+                                  {videoItem.label || fileName}
+                                </h3>
+                                {formattedSize && (
+                                  <p className="text-xs text-gray-500 mt-1">{formattedSize}</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <WatchButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                              <DownloadButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                            </div>
                           </div>
-                          <div className="flex gap-2">
-                            {/* <WatchButtonWrapper fileObj={videoObj} label={videoItem.label} /> */}
-                            <DownloadButtonWrapper fileObj={videoObj} label={videoItem.label} />
+
+                          {/* Desktop Layout - Horizontal */}
+                          <div className="hidden md:flex md:items-center md:justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="bg-purple-600 text-white p-3 rounded-lg flex-shrink-0">
+                                <Video className="w-5 h-5" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-medium text-gray-800 dark:text-white">
+                                  {videoItem.label || fileName}
+                                </h3>
+                                {formattedSize && (
+                                  <p className="text-sm text-gray-500">{formattedSize}</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              <WatchButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                              <DownloadButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                            </div>
                           </div>
-                        </div>
-                        {/* Video Player */}
-                        <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
-                          <Media
-                            resource={videoItem.video}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        {/* Separator line between videos (except for the last one) */}
-                        {index < (flyer.productVideos?.length ?? 0) - 1 && (
-                          <hr className="border-gray-200 dark:border-gray-700" />
-                        )}
-                      </div>
+
+                          {/* Video Player - Full Width Below */}
+                          {/* <div className="mt-4 aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
+                            <Media
+                              resource={videoItem.video}
+                              className="w-full h-full object-cover"
+                            />
+                          </div> */}
+                        </CardContent>
+                      </Card>
                     )
                   })}
                 </div>
