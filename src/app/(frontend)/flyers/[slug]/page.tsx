@@ -205,7 +205,6 @@ export default async function Flyer({ params: paramsPromise }: Args) {
                           ? `${sizeInMB.toFixed(2)} MB`
                           : `${Math.round(videoObj.filesize / 1024)} KB`
                     }
-
                     return (
                       <Card key={index} className="overflow-hidden bg-white dark:bg-gray-800">
                         <CardContent className="p-4">
@@ -276,29 +275,88 @@ export default async function Flyer({ params: paramsPromise }: Args) {
 
           <TabsContent value="testimonial-video" className="mt-6">
             <div className="space-y-6">
-              {/* Testimonial Video Download Button */}
-              {flyer.testimonialVideo && (
-                <div className="flex justify-center">
-                  <div className="mt-6">
-                    <DownloadButtonWrapper
-                      fileObj={
-                        typeof flyer.testimonialVideo === 'object' ? flyer.testimonialVideo : null
-                      }
-                      label="Testimonial Video"
-                    />
-                  </div>
-                </div>
-              )}
-              {/* <h2 className="text-2xl font-semibold mb-4">Testimonial Video</h2> */}
-              {flyer.testimonialVideo ? (
-                <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
-                  <Media resource={flyer.testimonialVideo} className="w-full h-full object-cover" />
+              {/* Multiple Testimonial Videos Section */}
+              {flyer.testimonialVideos && flyer.testimonialVideos.length > 0 ? (
+                <div className="space-y-4">
+                  {flyer.testimonialVideos.map((videoItem, index) => {
+                    const videoObj = typeof videoItem.video === 'object' ? videoItem.video : null
+                    if (!videoObj) return null
+
+                    const mimeType = videoObj?.mimeType || ''
+                    const fileName = videoObj?.filename || 'Video'
+                    const fileType = mimeType.split('/')[0] || 'video'
+
+                    // Format file size
+                    let formattedSize = ''
+                    if (videoObj.filesize && typeof videoObj.filesize === 'number') {
+                      const sizeInMB = videoObj.filesize / 1048576 // 1024 * 1024
+                      formattedSize =
+                        sizeInMB >= 1
+                          ? `${sizeInMB.toFixed(2)} MB`
+                          : `${Math.round(videoObj.filesize / 1024)} KB`
+                    }
+                    return (
+                      <Card key={index} className="overflow-hidden bg-white dark:bg-gray-800">
+                        <CardContent className="p-4">
+                          {/* Mobile Layout - Stacked */}
+                          <div className="flex flex-col space-y-3 md:hidden">
+                            <div className="flex items-center gap-3">
+                              <div className="bg-green-600 text-white p-2 rounded-lg flex-shrink-0">
+                                <Star className="w-5 h-5" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-medium text-sm leading-tight text-gray-800 dark:text-white">
+                                  {videoItem.label || fileName}
+                                </h3>
+                                {formattedSize && (
+                                  <p className="text-xs text-gray-500 mt-1">{formattedSize}</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <WatchButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                              <DownloadButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                            </div>
+                          </div>
+
+                          {/* Desktop Layout - Horizontal */}
+                          <div className="hidden md:flex md:items-center md:justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="bg-green-600 text-white p-3 rounded-lg flex-shrink-0">
+                                <Star className="w-5 h-5" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-medium text-gray-800 dark:text-white">
+                                  {videoItem.label || fileName}
+                                </h3>
+                                {formattedSize && (
+                                  <p className="text-sm text-gray-500">{formattedSize}</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              <WatchButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                              <DownloadButtonWrapper fileObj={videoObj} label={videoItem.label} />
+                            </div>
+                          </div>
+
+                          {/* Video Player - Full Width Below */}
+                          {/* <div className="mt-4 aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
+                            <Media
+                              resource={videoItem.video}
+                              className="w-full h-full object-cover"
+                            />
+                          </div> */}
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
                 </div>
               ) : (
                 <div className="aspect-video w-full rounded-lg bg-gray-100 flex items-center justify-center">
                   <div className="text-center text-gray-500">
-                    <Video className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <p>No testimonial video available</p>
+                    <Star className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <p>No testimonial videos available</p>
                   </div>
                 </div>
               )}
@@ -307,9 +365,55 @@ export default async function Flyer({ params: paramsPromise }: Args) {
 
           <TabsContent value="downloads" className="mt-6">
             <div className="space-y-6">
+              {/* Testimonial PDF Download Button */}
+              {flyer.testimonialPdfFile && (
+                <div className="flex justify-center">
+                  <div className="mt-6">
+                    <DownloadButtonWrapper
+                      fileObj={
+                        typeof flyer.testimonialPdfFile === 'object'
+                          ? flyer.testimonialPdfFile
+                          : null
+                      }
+                      label="Testimonial PDF"
+                    />
+                  </div>
+                </div>
+              )}
+              {/* Testimonial PDF Images Section */}
+              {flyer.testimonialPdfImages && flyer.testimonialPdfImages.length > 0 && (
+                <div>
+                  {/* Images grid */}
+                  <div
+                    className={`grid ${
+                      flyer.testimonialPdfImagesColumnsCount === '1'
+                        ? 'grid-cols-1'
+                        : flyer.testimonialPdfImagesColumnsCount === '2'
+                          ? 'grid-cols-1 md:grid-cols-2'
+                          : flyer.testimonialPdfImagesColumnsCount === '4'
+                            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
+                            : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' // default to 3 columns
+                    } gap-6`}
+                  >
+                    {flyer.testimonialPdfImages.map((item, i) => (
+                      <div
+                        key={i}
+                        className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700 ${flyer.testimonialPdfImagesColumnsCount === '1' ? 'max-w-6xl' : 'max-w-full'} mx-auto`}
+                      >
+                        <div>
+                          <Media resource={item.image} className="max-w-full" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Additional Downloadable Files Section */}
               {flyer.downloadableFiles && flyer.downloadableFiles.length > 0 && (
                 <div>
-                  <h2 className="text-xl md:text-2xl font-semibold mb-4">Downloadable Files</h2>
+                  <h2 className="text-xl md:text-2xl font-semibold mb-4">
+                    Additional Downloadable Files
+                  </h2>
                   <div className="space-y-3 md:space-y-2">
                     {flyer.downloadableFiles.map((fileItem) => {
                       const fileObj = typeof fileItem.file === 'object' ? fileItem.file : null

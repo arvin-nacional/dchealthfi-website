@@ -817,10 +817,39 @@ export interface Flyer {
       }[]
     | null;
   /**
-   * Upload a testimonial video for the product
+   * Upload testimonial videos for the product
    */
-  testimonialVideo?: (string | null) | Media;
+  testimonialVideos?:
+    | {
+        video: string | Media;
+        /**
+         * A descriptive label for this video (e.g., "Customer Review", "Product Testimonial")
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   category: string | Category;
+  /**
+   * Upload a PDF file for testimonial download
+   */
+  testimonialPdfFile?: (string | null) | Media;
+  /**
+   * Add images extracted from the testimonial PDF file to display in the Testimonial Files tab
+   */
+  testimonialPdfImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of columns for displaying testimonial PDF images
+   */
+  testimonialPdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
+  /**
+   * Additional files for download (optional)
+   */
   downloadableFiles?:
     | {
         file: string | Media;
@@ -1619,8 +1648,22 @@ export interface FlyersSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  testimonialVideo?: T;
+  testimonialVideos?:
+    | T
+    | {
+        video?: T;
+        label?: T;
+        id?: T;
+      };
   category?: T;
+  testimonialPdfFile?: T;
+  testimonialPdfImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  testimonialPdfImagesColumnsCount?: T;
   downloadableFiles?:
     | T
     | {

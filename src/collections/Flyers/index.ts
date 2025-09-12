@@ -140,7 +140,7 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'pdfImagesColumnsCount',
               type: 'select',
               label: 'PDF Images Columns',
-              defaultValue: '3',
+              defaultValue: '1',
               admin: {
                 description: 'Number of columns for displaying PDF images',
               },
@@ -201,13 +201,31 @@ export const Flyers: CollectionConfig<'flyers'> = {
         {
           fields: [
             {
-              name: 'testimonialVideo',
-              type: 'upload',
-              relationTo: 'media',
-              label: 'Testimonial Video',
+              name: 'testimonialVideos',
+              type: 'array',
+              label: 'Testimonial Videos',
               admin: {
-                description: 'Upload a testimonial video for the product',
+                description: 'Upload testimonial videos for the product',
               },
+              fields: [
+                {
+                  name: 'video',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Video File',
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                  label: 'Video Label',
+                  admin: {
+                    description:
+                      'A descriptive label for this video (e.g., "Customer Review", "Product Testimonial")',
+                  },
+                },
+              ],
             },
           ],
           label: 'Testimonial Video',
@@ -224,9 +242,66 @@ export const Flyers: CollectionConfig<'flyers'> = {
               },
             },
             {
+              name: 'testimonialPdfFile',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Testimonial PDF File',
+              admin: {
+                description: 'Upload a PDF file for testimonial download',
+              },
+            },
+            {
+              name: 'testimonialPdfImages',
+              type: 'array',
+              label: 'Testimonial PDF Images',
+              admin: {
+                description:
+                  'Add images extracted from the testimonial PDF file to display in the Testimonial Files tab',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Image',
+                },
+              ],
+            },
+            {
+              name: 'testimonialPdfImagesColumnsCount',
+              type: 'select',
+              label: 'Testimonial PDF Images Columns',
+              defaultValue: '1',
+              admin: {
+                description: 'Number of columns for displaying testimonial PDF images',
+              },
+              options: [
+                {
+                  label: '1 Column',
+                  value: '1',
+                },
+                {
+                  label: '2 Columns',
+                  value: '2',
+                },
+                {
+                  label: '3 Columns',
+                  value: '3',
+                },
+                {
+                  label: '4 Columns',
+                  value: '4',
+                },
+              ],
+            },
+            {
               name: 'downloadableFiles',
               type: 'array',
-              label: 'Downloadable Files',
+              label: 'Additional Downloadable Files',
+              admin: {
+                description: 'Additional files for download (optional)',
+              },
               fields: [
                 {
                   name: 'file',
