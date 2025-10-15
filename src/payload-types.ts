@@ -110,7 +110,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: 'en' | 'zh';
+  locale: null;
   user: User & {
     collection: 'users';
   };
@@ -369,6 +369,10 @@ export interface Media {
 export interface Category {
   id: string;
   title: string;
+  /**
+   * Chinese translation of the title (optional)
+   */
+  titleChinese?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
   parent?: (string | null) | Category;
@@ -768,9 +772,17 @@ export interface FlyersBlock {
 export interface Flyer {
   id: string;
   title: string;
+  /**
+   * Chinese translation of the title (optional)
+   */
+  titleChinese?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
   flyerImage: string | Media;
+  /**
+   * Chinese version of the flyer image (optional)
+   */
+  flyerImageChinese?: (string | null) | Media;
   description: {
     root: {
       type: string;
@@ -787,13 +799,44 @@ export interface Flyer {
     [k: string]: unknown;
   };
   /**
-   * Upload a PDF file for download (can be different for each language)
+   * Chinese translation of the description (optional)
+   */
+  descriptionChinese?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Upload a PDF file for download
    */
   pdfFile?: (string | null) | Media;
   /**
-   * Add images extracted from the PDF file to display in the Product Info tab (can be different for each language)
+   * Chinese version of the PDF file (optional)
+   */
+  pdfFileChinese?: (string | null) | Media;
+  /**
+   * Add images extracted from the PDF file to display in the Product Info tab
    */
   pdfImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Chinese version of PDF images to display in the Product Info tab (optional)
+   */
+  pdfImagesChinese?:
     | {
         image: string | Media;
         id?: string | null;
@@ -804,7 +847,7 @@ export interface Flyer {
    */
   pdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
   /**
-   * Upload videos showcasing the product (can be different for each language)
+   * Upload videos showcasing the product
    */
   productVideos?:
     | {
@@ -817,7 +860,20 @@ export interface Flyer {
       }[]
     | null;
   /**
-   * Upload testimonial videos for the product (can be different for each language)
+   * Chinese version of product videos (optional)
+   */
+  productVideosChinese?:
+    | {
+        video: string | Media;
+        /**
+         * A descriptive label for this video in Chinese
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Upload testimonial videos for the product
    */
   testimonialVideos?:
     | {
@@ -829,15 +885,41 @@ export interface Flyer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Chinese version of testimonial videos (optional)
+   */
+  testimonialVideosChinese?:
+    | {
+        video: string | Media;
+        /**
+         * A descriptive label for this video in Chinese
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   category: string | Category;
   /**
-   * Upload a PDF file for testimonial download (can be different for each language)
+   * Upload a PDF file for testimonial download
    */
   testimonialPdfFile?: (string | null) | Media;
   /**
-   * Add images extracted from the testimonial PDF file to display in the Testimonial Files tab (can be different for each language)
+   * Chinese version of the testimonial PDF file (optional)
+   */
+  testimonialPdfFileChinese?: (string | null) | Media;
+  /**
+   * Add images extracted from the testimonial PDF file to display in the Testimonial Files tab
    */
   testimonialPdfImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Chinese version of testimonial PDF images (optional)
+   */
+  testimonialPdfImagesChinese?:
     | {
         image: string | Media;
         id?: string | null;
@@ -848,9 +930,19 @@ export interface Flyer {
    */
   testimonialPdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
   /**
-   * Additional files for download (optional, can be different for each language)
+   * Additional files for download (optional)
    */
   downloadableFiles?:
+    | {
+        file: string | Media;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Chinese version of additional downloadable files (optional)
+   */
+  downloadableFilesChinese?:
     | {
         file: string | Media;
         label: string;
@@ -1598,12 +1690,22 @@ export interface PDFImagesBlockSelect<T extends boolean = true> {
  */
 export interface FlyersSelect<T extends boolean = true> {
   title?: T;
+  titleChinese?: T;
   slug?: T;
   slugLock?: T;
   flyerImage?: T;
+  flyerImageChinese?: T;
   description?: T;
+  descriptionChinese?: T;
   pdfFile?: T;
+  pdfFileChinese?: T;
   pdfImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  pdfImagesChinese?:
     | T
     | {
         image?: T;
@@ -1617,7 +1719,21 @@ export interface FlyersSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  productVideosChinese?:
+    | T
+    | {
+        video?: T;
+        label?: T;
+        id?: T;
+      };
   testimonialVideos?:
+    | T
+    | {
+        video?: T;
+        label?: T;
+        id?: T;
+      };
+  testimonialVideosChinese?:
     | T
     | {
         video?: T;
@@ -1626,7 +1742,14 @@ export interface FlyersSelect<T extends boolean = true> {
       };
   category?: T;
   testimonialPdfFile?: T;
+  testimonialPdfFileChinese?: T;
   testimonialPdfImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  testimonialPdfImagesChinese?:
     | T
     | {
         image?: T;
@@ -1634,6 +1757,13 @@ export interface FlyersSelect<T extends boolean = true> {
       };
   testimonialPdfImagesColumnsCount?: T;
   downloadableFiles?:
+    | T
+    | {
+        file?: T;
+        label?: T;
+        id?: T;
+      };
+  downloadableFilesChinese?:
     | T
     | {
         file?: T;
@@ -1751,6 +1881,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  titleChinese?: T;
   slug?: T;
   slugLock?: T;
   parent?: T;

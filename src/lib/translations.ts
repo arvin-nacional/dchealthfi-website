@@ -97,3 +97,60 @@ export function setClientLocale(locale: Locale) {
   localStorage.setItem('locale', locale)
   document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=31536000`
 }
+
+/**
+ * Get localized content from PayloadCMS data
+ * Falls back to English if Chinese content is not available
+ */
+export function getLocalizedField(data: any, fieldName: string, locale: Locale): any {
+  if (locale === 'zh') {
+    const chineseField = data[`${fieldName}Chinese`]
+    if (chineseField) {
+      return chineseField
+    }
+  }
+  return data[fieldName]
+}
+
+/**
+ * Get localized title (common use case)
+ */
+export function getLocalizedTitle(data: any, locale: Locale): string {
+  return getLocalizedField(data, 'title', locale)
+}
+
+/**
+ * Get localized description (common use case)
+ */
+export function getLocalizedDescription(data: any, locale: Locale): any {
+  return getLocalizedField(data, 'description', locale)
+}
+
+/**
+ * Get localized image (common use case)
+ */
+export function getLocalizedImage(data: any, fieldName: string, locale: Locale): any {
+  return getLocalizedField(data, fieldName, locale)
+}
+
+/**
+ * Get localized PDF file
+ */
+export function getLocalizedPdfFile(data: any, locale: Locale): any {
+  return getLocalizedField(data, 'pdfFile', locale)
+}
+
+/**
+ * Get localized videos array
+ */
+export function getLocalizedVideos(data: any, fieldName: string, locale: Locale): any[] {
+  const localizedVideos = getLocalizedField(data, fieldName, locale)
+  return localizedVideos || []
+}
+
+/**
+ * Get localized downloadable files
+ */
+export function getLocalizedDownloadableFiles(data: any, locale: Locale): any[] {
+  return getLocalizedField(data, 'downloadableFiles', locale) || []
+}
