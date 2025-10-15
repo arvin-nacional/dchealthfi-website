@@ -17,6 +17,7 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { Toaster } from 'sonner'
+import { LanguageSelector } from '@/components/LanguageSelector'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -29,9 +30,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
-        <NextTopLoader 
-          color="#3b82f6" 
-          showSpinner={false} 
+        <NextTopLoader
+          color="#3b82f6"
+          showSpinner={false}
           height={3}
           shadow="0 0 10px rgba(59, 130, 246, 0.7)"
         />
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
+          <LanguageSelector />
           <Toaster />
         </Providers>
       </body>
