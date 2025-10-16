@@ -26,6 +26,13 @@ export const translations = {
     downloadPDF: 'Download PDF',
     additionalFiles: 'Additional Files',
     fileSize: 'File Size',
+    downloading: 'Downloading',
+    downloadSuccess: 'Download completed successfully',
+    downloadFailed: 'Download failed',
+    networkError: 'Network error occurred',
+    noImagesToDisplay: 'No images to display',
+    viewImages: 'View Images',
+    imageGallery: 'Image Gallery',
 
     // Language Selector
     selectLanguage: 'Select Language',
@@ -35,6 +42,12 @@ export const translations = {
     // SEO
     siteTitle: 'DC Health Fi',
     siteDescription: 'Your health and wellness partner',
+
+    // Category Names
+    smartionseries: 'Smart-Ion Series',
+    personalcare: 'Personal Care',
+    healthdevices: 'Health Devices',
+    healthsupplements: 'Health Supplements',
   },
   zh: {
     // Navigation
@@ -61,6 +74,13 @@ export const translations = {
     downloadPDF: '下载PDF',
     additionalFiles: '附加文件',
     fileSize: '文件大小',
+    downloading: '下载中',
+    downloadSuccess: '下载成功完成',
+    downloadFailed: '下载失败',
+    networkError: '网络错误',
+    noImagesToDisplay: '没有图片可显示',
+    viewImages: '查看图片',
+    imageGallery: '图片库',
 
     // Language Selector
     selectLanguage: '选择语言',
@@ -70,6 +90,12 @@ export const translations = {
     // SEO
     siteTitle: 'DC Health Fi',
     siteDescription: '您的健康与保健伙伴',
+
+    // Category Names
+    smartionseries: '智能离子系列',
+    personalcare: '个人护理',
+    healthdevices: '健康设备',
+    healthsupplements: '健康补充剂',
   },
 }
 

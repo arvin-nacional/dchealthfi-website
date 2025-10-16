@@ -8,8 +8,9 @@ export const PDFImagesBlock: Block = {
       name: 'title',
       type: 'text',
       label: 'Title',
+      localized: true,
       admin: {
-        description: 'Optional title for the PDF images block',
+        description: 'Optional title for the PDF images block (localized)',
       },
       required: false,
     },
@@ -17,8 +18,9 @@ export const PDFImagesBlock: Block = {
       name: 'description',
       type: 'textarea',
       label: 'Description',
+      localized: true,
       admin: {
-        description: 'Optional description for the PDF images block',
+        description: 'Optional description for the PDF images block (localized)',
       },
       required: false,
     },
@@ -27,8 +29,9 @@ export const PDFImagesBlock: Block = {
       type: 'upload',
       relationTo: 'media',
       label: 'PDF File',
+      localized: true,
       admin: {
-        description: 'Upload a PDF file for download',
+        description: 'Upload a PDF file for download (can be different per language)',
       },
       required: false,
     },
@@ -42,8 +45,9 @@ export const PDFImagesBlock: Block = {
       name: 'images',
       type: 'array',
       label: 'PDF Images',
+      localized: true,
       admin: {
-        description: 'Add images extracted from a PDF file',
+        description: 'Add images extracted from a PDF file (can be different per language)',
       },
       fields: [
         {

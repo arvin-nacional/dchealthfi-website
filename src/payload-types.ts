@@ -1014,20 +1014,20 @@ export interface TitleBlock {
  */
 export interface PDFImagesBlock {
   /**
-   * Optional title for the PDF images block
+   * Optional title for the PDF images block (localized)
    */
   title?: string | null;
   /**
-   * Optional description for the PDF images block
+   * Optional description for the PDF images block (localized)
    */
   description?: string | null;
   /**
-   * Upload a PDF file for download
+   * Upload a PDF file for download (can be different per language)
    */
   pdfFile?: (string | null) | Media;
   showDownloadButton?: boolean | null;
   /**
-   * Add images extracted from a PDF file
+   * Add images extracted from a PDF file (can be different per language)
    */
   images: {
     image: string | Media;

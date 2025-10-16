@@ -14,7 +14,22 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 
+  // Decode URL first to prevent double encoding
+  let decodedUrl = url
+  try {
+    // Only decode if it appears to be encoded
+    if (url.includes('%')) {
+      decodedUrl = decodeURIComponent(url)
+    }
+  } catch (error) {
+    // If decoding fails, use original URL
+    console.warn('Failed to decode URL:', url, error)
+    decodedUrl = url
+  }
+
   // Otherwise prepend client-side URL
   const baseUrl = getClientSideURL()
-  return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
+  const fullUrl = `${baseUrl}${decodedUrl}`
+
+  return cacheTag ? `${fullUrl}?${cacheTag}` : fullUrl
 }

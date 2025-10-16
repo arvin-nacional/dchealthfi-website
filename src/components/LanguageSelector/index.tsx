@@ -21,6 +21,9 @@ export function LanguageSelector() {
   const handleLanguageSelect = (selectedLocale: Locale) => {
     setLocale(selectedLocale)
     setIsOpen(false)
+
+    // Refresh the page to update server-side content
+    window.location.reload()
   }
 
   return (

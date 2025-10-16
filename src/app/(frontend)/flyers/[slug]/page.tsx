@@ -2,6 +2,9 @@ import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 import configPromise from '@payload-config'
+import { cookies } from 'next/headers'
+import type { Locale } from '@/lib/translations'
+import { translations } from '@/lib/translations'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
@@ -46,7 +49,15 @@ export default async function Flyer({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
   const url = '/flyers/' + slug
-  const flyer = await queryFlyerBySlug({ slug })
+
+  // Get locale from cookies
+  const cookieStore = await cookies()
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'en'
+
+  // Server-side translation function
+  const t = (key: keyof typeof translations.en) => translations[locale][key] || translations.en[key]
+
+  const flyer = await queryFlyerBySlug({ slug, locale })
 
   if (!flyer) return <PayloadRedirects url={url} />
 
@@ -123,19 +134,19 @@ export default async function Flyer({ params: paramsPromise }: Args) {
         <Tabs defaultValue="info" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto md:h-10">
             <TabsTrigger value="info" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
-              Product Info
+              {t('productInfo')}
             </TabsTrigger>
             <TabsTrigger value="video" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
-              Product Video
+              {t('productVideo')}
             </TabsTrigger>
             <TabsTrigger
               value="testimonial-video"
               className="text-xs md:text-sm px-2 py-2 md:py-1.5"
             >
-              Testimonial Video
+              {t('testimonialVideo')}
             </TabsTrigger>
             <TabsTrigger value="downloads" className="text-xs md:text-sm px-2 py-2 md:py-1.5">
-              Testimonial Files
+              {t('testimonials')}
             </TabsTrigger>
           </TabsList>
 
@@ -411,9 +422,7 @@ export default async function Flyer({ params: paramsPromise }: Args) {
               {/* Additional Downloadable Files Section */}
               {flyer.downloadableFiles && flyer.downloadableFiles.length > 0 && (
                 <div>
-                  <h2 className="text-xl md:text-2xl font-semibold mb-4">
-                    Additional Downloadable Files
-                  </h2>
+                  <h2 className="text-xl md:text-2xl font-semibold mb-4">{t('additionalFiles')}</h2>
                   <div className="space-y-3 md:space-y-2">
                     {flyer.downloadableFiles.map((fileItem) => {
                       const fileObj = typeof fileItem.file === 'object' ? fileItem.file : null
@@ -516,30 +525,38 @@ export default async function Flyer({ params: paramsPromise }: Args) {
 // Next.js revalidation configuration to ensure content is fresh
 export const revalidate = 10 // Revalidate every 10 seconds
 
-const queryFlyerBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
+const queryFlyerBySlug = cache(
+  async ({ slug, locale = 'en' }: { slug: string; locale?: Locale }) => {
+    const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'flyers',
-    draft,
-    limit: 1,
-    overrideAccess: draft, // Match the pattern from posts page
-    pagination: false, // Match the pattern from posts page
-    where: {
-      slug: {
-        equals: slug,
+    const result = await payload.find({
+      collection: 'flyers',
+      draft,
+      limit: 1,
+      overrideAccess: draft,
+      pagination: false,
+      locale, // Add locale parameter to fetch localized content
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-  })
+    })
 
-  return result.docs?.[0] || null
-})
+    return result.docs?.[0] || null
+  },
+)
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const flyer = await queryFlyerBySlug({ slug })
+
+  // Get locale from cookies for metadata generation
+  const cookieStore = await cookies()
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'en'
+
+  const flyer = await queryFlyerBySlug({ slug, locale })
 
   return generateMeta({ doc: flyer })
 }
