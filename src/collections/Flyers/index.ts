@@ -77,7 +77,14 @@ export const Flyers: CollectionConfig<'flyers'> = {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true,
+    },
+    {
+      name: 'titleChinese',
+      type: 'text',
+      label: 'Title (Chinese)',
+      admin: {
+        description: 'Chinese translation of the title (optional)',
+      },
     },
     ...slugField(),
     {
@@ -91,12 +98,19 @@ export const Flyers: CollectionConfig<'flyers'> = {
               relationTo: 'media',
               required: true,
               label: 'Flyer Image',
-              localized: true,
+            },
+            {
+              name: 'flyerImageChinese',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Flyer Image (Chinese)',
+              admin: {
+                description: 'Chinese version of the flyer image (optional)',
+              },
             },
             {
               name: 'description',
               type: 'richText',
-              localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -113,23 +127,68 @@ export const Flyers: CollectionConfig<'flyers'> = {
               required: true,
             },
             {
+              name: 'descriptionChinese',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    BlocksFeature({ blocks: [MediaBlock] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                  ]
+                },
+              }),
+              label: 'Description (Chinese)',
+              admin: {
+                description: 'Chinese translation of the description (optional)',
+              },
+            },
+            {
               name: 'pdfFile',
               type: 'upload',
               relationTo: 'media',
               label: 'PDF File',
-              localized: true,
               admin: {
-                description: 'Upload a PDF file for download (can be different for each language)',
+                description: 'Upload a PDF file for download',
+              },
+            },
+            {
+              name: 'pdfFileChinese',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'PDF File (Chinese)',
+              admin: {
+                description: 'Chinese version of the PDF file (optional)',
               },
             },
             {
               name: 'pdfImages',
               type: 'array',
               label: 'PDF Images',
-              localized: true,
               admin: {
                 description:
-                  'Add images extracted from the PDF file to display in the Product Info tab (can be different for each language)',
+                  'Add images extracted from the PDF file to display in the Product Info tab',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Image',
+                },
+              ],
+            },
+            {
+              name: 'pdfImagesChinese',
+              type: 'array',
+              label: 'PDF Images (Chinese)',
+              admin: {
+                description:
+                  'Chinese version of PDF images to display in the Product Info tab (optional)',
               },
               fields: [
                 {
@@ -177,10 +236,8 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'productVideos',
               type: 'array',
               label: 'Product Videos',
-              localized: true,
               admin: {
-                description:
-                  'Upload videos showcasing the product (can be different for each language)',
+                description: 'Upload videos showcasing the product',
               },
               fields: [
                 {
@@ -195,10 +252,35 @@ export const Flyers: CollectionConfig<'flyers'> = {
                   type: 'text',
                   required: true,
                   label: 'Video Label',
-                  localized: true,
                   admin: {
                     description:
                       'A descriptive label for this video (e.g., "Product Demo", "Installation Guide")',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'productVideosChinese',
+              type: 'array',
+              label: 'Product Videos (Chinese)',
+              admin: {
+                description: 'Chinese version of product videos (optional)',
+              },
+              fields: [
+                {
+                  name: 'video',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Video File',
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                  label: 'Video Label',
+                  admin: {
+                    description: 'A descriptive label for this video in Chinese',
                   },
                 },
               ],
@@ -212,10 +294,8 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'testimonialVideos',
               type: 'array',
               label: 'Testimonial Videos',
-              localized: true,
               admin: {
-                description:
-                  'Upload testimonial videos for the product (can be different for each language)',
+                description: 'Upload testimonial videos for the product',
               },
               fields: [
                 {
@@ -233,6 +313,32 @@ export const Flyers: CollectionConfig<'flyers'> = {
                   admin: {
                     description:
                       'A descriptive label for this video (e.g., "Customer Review", "Product Testimonial")',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'testimonialVideosChinese',
+              type: 'array',
+              label: 'Testimonial Videos (Chinese)',
+              admin: {
+                description: 'Chinese version of testimonial videos (optional)',
+              },
+              fields: [
+                {
+                  name: 'video',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Video File',
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                  label: 'Video Label',
+                  admin: {
+                    description: 'A descriptive label for this video in Chinese',
                   },
                 },
               ],
@@ -256,20 +362,43 @@ export const Flyers: CollectionConfig<'flyers'> = {
               type: 'upload',
               relationTo: 'media',
               label: 'Testimonial PDF File',
-              localized: true,
               admin: {
-                description:
-                  'Upload a PDF file for testimonial download (can be different for each language)',
+                description: 'Upload a PDF file for testimonial download',
+              },
+            },
+            {
+              name: 'testimonialPdfFileChinese',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Testimonial PDF File (Chinese)',
+              admin: {
+                description: 'Chinese version of the testimonial PDF file (optional)',
               },
             },
             {
               name: 'testimonialPdfImages',
               type: 'array',
               label: 'Testimonial PDF Images',
-              localized: true,
               admin: {
                 description:
-                  'Add images extracted from the testimonial PDF file to display in the Testimonial Files tab (can be different for each language)',
+                  'Add images extracted from the testimonial PDF file to display in the Testimonial Files tab',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Image',
+                },
+              ],
+            },
+            {
+              name: 'testimonialPdfImagesChinese',
+              type: 'array',
+              label: 'Testimonial PDF Images (Chinese)',
+              admin: {
+                description: 'Chinese version of testimonial PDF images (optional)',
               },
               fields: [
                 {
@@ -312,10 +441,8 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'downloadableFiles',
               type: 'array',
               label: 'Additional Downloadable Files',
-              localized: true,
               admin: {
-                description:
-                  'Additional files for download (optional, can be different for each language)',
+                description: 'Additional files for download (optional)',
               },
               fields: [
                 {
@@ -328,7 +455,27 @@ export const Flyers: CollectionConfig<'flyers'> = {
                   name: 'label',
                   type: 'text',
                   required: true,
-                  localized: true,
+                },
+              ],
+            },
+            {
+              name: 'downloadableFilesChinese',
+              type: 'array',
+              label: 'Additional Downloadable Files (Chinese)',
+              admin: {
+                description: 'Chinese version of additional downloadable files (optional)',
+              },
+              fields: [
+                {
+                  name: 'file',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
                 },
               ],
             },

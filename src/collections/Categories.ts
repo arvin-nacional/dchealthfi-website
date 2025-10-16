@@ -20,7 +20,14 @@ export const Categories: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true,
+    },
+    {
+      name: 'titleChinese',
+      type: 'text',
+      label: 'Title (Chinese)',
+      admin: {
+        description: 'Chinese translation of the title (optional)',
+      },
     },
     ...slugField(),
   ],
