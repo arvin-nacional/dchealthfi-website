@@ -2,6 +2,8 @@
 
 import React from 'react'
 import dynamic from 'next/dynamic'
+import { useLanguage } from '@/providers/Language'
+import { useTranslation } from '@/lib/translations'
 
 // Dynamically import the heavy LocalSearchbar component to reduce initial bundle
 const LocalSearchbar = dynamic(() => import('@/components/LocalSearchBar'), {
@@ -14,12 +16,15 @@ const LocalSearchbar = dynamic(() => import('@/components/LocalSearchBar'), {
 })
 
 export function FlyersSearchBar() {
+  const { locale } = useLanguage()
+  const { t } = useTranslation(locale)
+
   return (
     <div className="w-full flex justify-center items-center">
       <LocalSearchbar
         route="/flyers"
         iconPosition="left"
-        placeholder="Search flyers..."
+        placeholder={t('search') + ' flyers...'}
         otherClasses="max-w-[650px] mb-8"
       />
     </div>

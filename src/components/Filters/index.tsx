@@ -7,6 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Category } from '@/payload-types'
 import { Button } from '../ui/button'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useLanguage } from '@/providers/Language'
+import { useTranslation } from '@/lib/translations'
 
 interface FilterProps {
   categories: Category[]
@@ -15,6 +17,20 @@ interface FilterProps {
 const Filters: React.FC<FilterProps> = ({ categories }) => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { locale } = useLanguage()
+  const { t } = useTranslation(locale)
+
+  // Function to translate category names
+  const translateCategoryName = (categoryTitle: string) => {
+    // Convert category title to lowercase and remove spaces and hyphens for translation key
+    const key = categoryTitle
+      .toLowerCase()
+      .replace(/[\s-]+/g, '') as keyof typeof import('@/lib/translations').translations.en
+
+    // Try to get translation, fallback to original title if not found
+    const translated = t(key)
+    return translated !== key ? translated : categoryTitle
+  }
 
   // Memoize the active category to prevent unnecessary re-renders
   const activeCategory = useMemo(() => searchParams.get('category'), [searchParams])
@@ -57,7 +73,7 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
         )}
         onClick={clearCategoryFilter}
       >
-        All
+        {t('allCategories')}
       </Button>
       {categories.map((category) => {
         return (
@@ -69,7 +85,7 @@ const Filters: React.FC<FilterProps> = ({ categories }) => {
             )}
             onClick={() => handleUpdateParams(category.title)}
           >
-            {category.title}
+            {translateCategoryName(category.title)}
           </Button>
         )
       })}

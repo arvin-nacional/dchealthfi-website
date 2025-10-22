@@ -5,6 +5,8 @@ import type { PDFImagesBlock as PDFImagesBlockType } from '@/payload-types'
 import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 import { toast } from 'sonner'
+import { useLanguage } from '@/providers/Language'
+import { useTranslation } from '@/lib/translations'
 
 export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
   title,
@@ -15,6 +17,8 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
   pdfFile,
   showDownloadButton = true,
 }) => {
+  const { locale } = useLanguage()
+  const { t } = useTranslation(locale)
   // Determine grid columns based on columnsCount
   const getGridCols = () => {
     switch (columnsCount) {
@@ -73,7 +77,7 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
 
     if (!pdfDetails?.url) return
 
-    toast.loading('Downloading...', { id: 'pdf-download-progress' })
+    toast.loading(t('downloading') + '...', { id: 'pdf-download-progress' })
 
     try {
       // Create an XMLHttpRequest to track download progress
@@ -84,7 +88,7 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
       xhr.onprogress = (event) => {
         if (event.lengthComputable) {
           const percentComplete = Math.round((event.loaded / event.total) * 100)
-          toast.loading(`Downloading: ${percentComplete}%`, { id: 'pdf-download-progress' })
+          toast.loading(`${t('downloading')}: ${percentComplete}%`, { id: 'pdf-download-progress' })
         }
       }
 
@@ -105,24 +109,24 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
           window.URL.revokeObjectURL(url)
 
           toast.dismiss('pdf-download-progress')
-          toast.success(`Downloaded ${pdfDetails.name}`, {
-            description: 'PDF downloaded successfully',
+          toast.success(`${t('downloadSuccess')} ${pdfDetails.name}`, {
+            description: t('downloadSuccess'),
           })
         } else {
           toast.dismiss('pdf-download-progress')
-          toast.error(`Download failed (${this.status})`)
+          toast.error(`${t('downloadFailed')} (${this.status})`)
         }
       }
 
       xhr.onerror = function () {
         toast.dismiss('pdf-download-progress')
-        toast.error('Network error during download')
+        toast.error(t('networkError'))
       }
 
       xhr.send()
     } catch (error) {
       toast.dismiss('pdf-download-progress')
-      toast.error('Download failed. Please try again.')
+      toast.error(t('downloadFailed') + '. Please try again.')
     }
   }
 
@@ -154,7 +158,7 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
                 className="bg-blue-600 hover:bg-blue-700 text-white w-auto"
               >
                 <Download className="w-4 h-4 mr-2" />
-                Download
+                {t('download')}
               </Button>
             )}
           </div>
@@ -176,7 +180,7 @@ export const PDFImagesBlock: React.FC<PDFImagesBlockType> = ({
           </div>
         ) : (
           <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-            <p>No images to display</p>
+            <p>{t('noImagesToDisplay')}</p>
           </div>
         )}
       </div>

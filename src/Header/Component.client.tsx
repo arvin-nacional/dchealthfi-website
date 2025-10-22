@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/utilities/ui'
+import { useLanguage } from '@/providers/Language'
+import { useTranslation } from '@/lib/translations'
 
 import type { Header } from '@/payload-types'
 
@@ -19,6 +21,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState<boolean>(false)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
+  const { locale } = useLanguage()
+  const { t } = useTranslation(locale)
   const pathname = usePathname()
 
   // Handle scroll effect

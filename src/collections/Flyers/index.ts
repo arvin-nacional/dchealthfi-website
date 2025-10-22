@@ -77,6 +77,7 @@ export const Flyers: CollectionConfig<'flyers'> = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     ...slugField(),
     {
@@ -90,10 +91,12 @@ export const Flyers: CollectionConfig<'flyers'> = {
               relationTo: 'media',
               required: true,
               label: 'Flyer Image',
+              localized: true,
             },
             {
               name: 'description',
               type: 'richText',
+              localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -114,17 +117,19 @@ export const Flyers: CollectionConfig<'flyers'> = {
               type: 'upload',
               relationTo: 'media',
               label: 'PDF File',
+              localized: true,
               admin: {
-                description: 'Upload a PDF file for download',
+                description: 'Upload a PDF file for download (can be different for each language)',
               },
             },
             {
               name: 'pdfImages',
               type: 'array',
               label: 'PDF Images',
+              localized: true,
               admin: {
                 description:
-                  'Add images extracted from the PDF file to display in the Product Info tab',
+                  'Add images extracted from the PDF file to display in the Product Info tab (can be different for each language)',
               },
               fields: [
                 {
@@ -172,8 +177,10 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'productVideos',
               type: 'array',
               label: 'Product Videos',
+              localized: true,
               admin: {
-                description: 'Upload videos showcasing the product',
+                description:
+                  'Upload videos showcasing the product (can be different for each language)',
               },
               fields: [
                 {
@@ -188,6 +195,7 @@ export const Flyers: CollectionConfig<'flyers'> = {
                   type: 'text',
                   required: true,
                   label: 'Video Label',
+                  localized: true,
                   admin: {
                     description:
                       'A descriptive label for this video (e.g., "Product Demo", "Installation Guide")',
@@ -204,8 +212,10 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'testimonialVideos',
               type: 'array',
               label: 'Testimonial Videos',
+              localized: true,
               admin: {
-                description: 'Upload testimonial videos for the product',
+                description:
+                  'Upload testimonial videos for the product (can be different for each language)',
               },
               fields: [
                 {
@@ -246,17 +256,20 @@ export const Flyers: CollectionConfig<'flyers'> = {
               type: 'upload',
               relationTo: 'media',
               label: 'Testimonial PDF File',
+              localized: true,
               admin: {
-                description: 'Upload a PDF file for testimonial download',
+                description:
+                  'Upload a PDF file for testimonial download (can be different for each language)',
               },
             },
             {
               name: 'testimonialPdfImages',
               type: 'array',
               label: 'Testimonial PDF Images',
+              localized: true,
               admin: {
                 description:
-                  'Add images extracted from the testimonial PDF file to display in the Testimonial Files tab',
+                  'Add images extracted from the testimonial PDF file to display in the Testimonial Files tab (can be different for each language)',
               },
               fields: [
                 {
@@ -299,8 +312,10 @@ export const Flyers: CollectionConfig<'flyers'> = {
               name: 'downloadableFiles',
               type: 'array',
               label: 'Additional Downloadable Files',
+              localized: true,
               admin: {
-                description: 'Additional files for download (optional)',
+                description:
+                  'Additional files for download (optional, can be different for each language)',
               },
               fields: [
                 {
@@ -313,6 +328,7 @@ export const Flyers: CollectionConfig<'flyers'> = {
                   name: 'label',
                   type: 'text',
                   required: true,
+                  localized: true,
                 },
               ],
             },

@@ -5,6 +5,8 @@ import React, { Suspense, cache } from 'react'
 import FlyerCard from '@/components/FlyerCard'
 import PaginationQuery from '@/components/PaginationQuery'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cookies } from 'next/headers'
+import type { Locale } from '@/lib/translations'
 
 // Set a longer revalidation time to improve performance
 export const revalidate = 3600 // Revalidate every hour instead of every 10 seconds
@@ -31,12 +33,14 @@ const getFlyers = cache(
     categoryID,
     searchQuery,
     categoryFilter,
+    locale = 'en',
   }: {
     pageNumber: number
     limit: number
     categoryID?: string
     searchQuery?: string
     categoryFilter?: string[]
+    locale?: Locale
   }) => {
     try {
       const payload = await getPayload({ config: configPromise })
@@ -69,6 +73,7 @@ const getFlyers = cache(
         depth: 1,
         limit,
         page: pageNumber,
+        locale, // Add locale parameter for localized content
         where: where as any,
         // Explicitly define only the fields we need for rendering
         sort: '-updatedAt', // Show newest first
@@ -90,7 +95,7 @@ const getFlyers = cache(
 )
 
 // Cache the categories fetch function with a longer TTL since categories rarely change
-const getCategories = cache(async () => {
+const getCategories = cache(async (locale: Locale = 'en') => {
   try {
     const payload = await getPayload({ config: configPromise })
 
@@ -100,6 +105,7 @@ const getCategories = cache(async () => {
       collection: 'categories',
       depth: 0, // We don't need nested data for categories
       limit: 100, // Reasonable upper limit
+      locale, // Add locale parameter for localized category titles
       // Only fetch fields we need for rendering
       sort: 'title', // Sort by title for a consistent order
     })
@@ -150,7 +156,11 @@ const FlyersGrid: React.FC<{
 const CategoriesSection: React.FC<{ searchParams: SearchParams | undefined }> = async ({
   searchParams,
 }) => {
-  const categoriesArr = await getCategories()
+  // Get locale from cookies for server-side rendering
+  const cookieStore = await cookies()
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'en'
+
+  const categoriesArr = await getCategories(locale)
 
   return (
     <Suspense
@@ -172,6 +182,10 @@ export const FlyersBlock: React.FC<
   const limit = limitFromProps || 12
   const searchParams = await params
 
+  // Get locale from cookies for server-side rendering
+  const cookieStore = await cookies()
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'en'
+
   // Extract all possible search parameters
   const categoryTitle = searchParams?.category // e.g., "Technology"
   const searchQuery = searchParams?.search
@@ -187,7 +201,7 @@ export const FlyersBlock: React.FC<
 
     // Only fetch categories if we need category filtering
     if (categoryTitle) {
-      const categoriesArr = await getCategories()
+      const categoriesArr = await getCategories(locale)
       const matchedCategory = categoriesArr.find((cat) => cat.title === categoryTitle)
       if (matchedCategory) {
         categoryID = matchedCategory.id
@@ -200,6 +214,7 @@ export const FlyersBlock: React.FC<
       limit,
       categoryID,
       searchQuery,
+      locale, // Pass locale to get localized flyer content
       categoryFilter: categories
         ? (categories.map((c) => (typeof c === 'string' ? c : c.id)).filter(Boolean) as string[])
         : undefined,

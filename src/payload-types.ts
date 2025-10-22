@@ -110,7 +110,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'zh';
   user: User & {
     collection: 'users';
   };
@@ -787,11 +787,11 @@ export interface Flyer {
     [k: string]: unknown;
   };
   /**
-   * Upload a PDF file for download
+   * Upload a PDF file for download (can be different for each language)
    */
   pdfFile?: (string | null) | Media;
   /**
-   * Add images extracted from the PDF file to display in the Product Info tab
+   * Add images extracted from the PDF file to display in the Product Info tab (can be different for each language)
    */
   pdfImages?:
     | {
@@ -804,7 +804,7 @@ export interface Flyer {
    */
   pdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
   /**
-   * Upload videos showcasing the product
+   * Upload videos showcasing the product (can be different for each language)
    */
   productVideos?:
     | {
@@ -817,7 +817,7 @@ export interface Flyer {
       }[]
     | null;
   /**
-   * Upload testimonial videos for the product
+   * Upload testimonial videos for the product (can be different for each language)
    */
   testimonialVideos?:
     | {
@@ -831,11 +831,11 @@ export interface Flyer {
     | null;
   category: string | Category;
   /**
-   * Upload a PDF file for testimonial download
+   * Upload a PDF file for testimonial download (can be different for each language)
    */
   testimonialPdfFile?: (string | null) | Media;
   /**
-   * Add images extracted from the testimonial PDF file to display in the Testimonial Files tab
+   * Add images extracted from the testimonial PDF file to display in the Testimonial Files tab (can be different for each language)
    */
   testimonialPdfImages?:
     | {
@@ -848,7 +848,7 @@ export interface Flyer {
    */
   testimonialPdfImagesColumnsCount?: ('1' | '2' | '3' | '4') | null;
   /**
-   * Additional files for download (optional)
+   * Additional files for download (optional, can be different for each language)
    */
   downloadableFiles?:
     | {
@@ -1014,20 +1014,20 @@ export interface TitleBlock {
  */
 export interface PDFImagesBlock {
   /**
-   * Optional title for the PDF images block
+   * Optional title for the PDF images block (localized)
    */
   title?: string | null;
   /**
-   * Optional description for the PDF images block
+   * Optional description for the PDF images block (localized)
    */
   description?: string | null;
   /**
-   * Upload a PDF file for download
+   * Upload a PDF file for download (can be different per language)
    */
   pdfFile?: (string | null) | Media;
   showDownloadButton?: boolean | null;
   /**
-   * Add images extracted from a PDF file
+   * Add images extracted from a PDF file (can be different per language)
    */
   images: {
     image: string | Media;
