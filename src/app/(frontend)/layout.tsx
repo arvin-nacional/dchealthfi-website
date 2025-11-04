@@ -17,7 +17,6 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { Toaster } from 'sonner'
-import { LanguageSelector } from '@/components/LanguageSelector'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -46,7 +45,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
-          <LanguageSelector />
           <Toaster />
         </Providers>
       </body>

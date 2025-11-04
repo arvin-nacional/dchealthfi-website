@@ -11,6 +11,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { LanguageSelector } from '@/components/LanguageSelector'
 
 interface HeaderClientProps {
   data: Header
@@ -80,7 +81,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             )}
           />
         </Link>
-        <HeaderNav data={data} />
+        <div className="flex items-center gap-4">
+          <LanguageSelector />
+          <HeaderNav data={data} />
+        </div>
       </div>
     </header>
   )

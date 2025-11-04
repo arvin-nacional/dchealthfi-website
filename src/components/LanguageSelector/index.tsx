@@ -1,73 +1,57 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import React from 'react'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useLanguage, type Locale } from '@/providers/Language'
-import { Globe } from 'lucide-react'
+import { Globe, ChevronDown } from 'lucide-react'
+import { cn } from '@/utilities/ui'
 
 export function LanguageSelector() {
-  const [isOpen, setIsOpen] = useState(false)
   const { locale, setLocale } = useLanguage()
-
-  useEffect(() => {
-    // Show language selector on first visit
-    const hasSelectedLanguage = localStorage.getItem('locale')
-    if (!hasSelectedLanguage) {
-      setIsOpen(true)
-    }
-  }, [])
 
   const handleLanguageSelect = (selectedLocale: Locale) => {
     setLocale(selectedLocale)
-    setIsOpen(false)
-
     // Refresh the page to update server-side content
     window.location.reload()
   }
 
-  return (
-    <>
-      {/* Floating language button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl dark:bg-blue-500 dark:hover:bg-blue-600"
-        aria-label="Change language"
-      >
-        <Globe className="h-5 w-5" />
-        <span className="text-sm font-medium">{locale === 'en' ? 'EN' : '中文'}</span>
-      </button>
+  const currentLanguageLabel = locale === 'en' ? 'EN' : '中文'
 
-      {/* Language selection dialog */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center text-2xl">
-              {locale === 'en' ? 'Select Language' : '选择语言'}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-6">
-            <Button
-              onClick={() => handleLanguageSelect('en')}
-              variant={locale === 'en' ? 'default' : 'outline'}
-              size="lg"
-              className="h-16 text-lg"
-            >
-              <Globe className="mr-3 h-6 w-6" />
-              English
-            </Button>
-            <Button
-              onClick={() => handleLanguageSelect('zh')}
-              variant={locale === 'zh' ? 'default' : 'outline'}
-              size="lg"
-              className="h-16 text-lg"
-            >
-              <Globe className="mr-3 h-6 w-6" />
-              中文 (Chinese)
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-white hover:text-white hover:bg-white/10 flex items-center gap-2 px-3 py-2"
+        >
+          <Globe className="h-4 w-4" />
+          <span className="text-sm font-medium">{currentLanguageLabel}</span>
+          <ChevronDown className="h-3 w-3" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[120px]">
+        <DropdownMenuItem
+          onClick={() => handleLanguageSelect('en')}
+          className={cn('flex items-center gap-2 cursor-pointer', locale === 'en' && 'bg-accent')}
+        >
+          <Globe className="h-4 w-4" />
+          English
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => handleLanguageSelect('zh')}
+          className={cn('flex items-center gap-2 cursor-pointer', locale === 'zh' && 'bg-accent')}
+        >
+          <Globe className="h-4 w-4" />
+          中文 (Chinese)
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
