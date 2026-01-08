@@ -31,12 +31,14 @@ export const TitleBlock: Block = {
       type: 'text',
       label: 'Heading',
       required: true,
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Description',
       required: true,
+      localized: true,
     },
   ],
 }

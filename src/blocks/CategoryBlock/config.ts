@@ -38,6 +38,7 @@ export const CategoryBlock: Block = {
       type: 'text',
       required: false,
       label: 'Section Heading',
+      localized: true,
       defaultValue: 'File Categories',
     },
     {
@@ -45,6 +46,7 @@ export const CategoryBlock: Block = {
       type: 'textarea',
       required: false,
       label: 'Description',
+      localized: true,
       defaultValue:
         'This collection represents our company’s official digital materials crafted to maintain consistency, strengthen our identity, and support your communication needs.',
     },
@@ -102,12 +104,14 @@ export const CategoryBlock: Block = {
           type: 'text',
           required: true,
           label: 'Title',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           required: true,
           label: 'Description',
+          localized: true,
         },
         {
           name: 'link',

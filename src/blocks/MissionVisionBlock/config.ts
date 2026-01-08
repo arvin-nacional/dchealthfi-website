@@ -24,6 +24,7 @@ export const MissionVisionBlock: Block = {
       type: 'text',
       label: 'Heading',
       required: false,
+      localized: true,
       defaultValue: 'Our Mission & Vision',
     },
     {
@@ -31,6 +32,7 @@ export const MissionVisionBlock: Block = {
       type: 'textarea',
       label: 'Description',
       required: false,
+      localized: true,
       defaultValue: 'Our mission defines our purpose and the values that guide our daily work.',
     },
     {
@@ -38,6 +40,7 @@ export const MissionVisionBlock: Block = {
       type: 'text',
       label: 'Mission Heading',
       required: false,
+      localized: true,
       defaultValue: 'Our Mission',
     },
 
@@ -46,6 +49,7 @@ export const MissionVisionBlock: Block = {
       type: 'textarea',
       label: 'Mission Content',
       required: false,
+      localized: true,
       defaultValue:
         "To deliver innovative, high-quality commercial kitchen solutions that enhance operational efficiency, ensure food safety, and contribute to the success of our clients' businesses. We are committed to excellence in design, fabrication, and service, creating value through customized solutions that meet the unique needs of each client.",
     },
@@ -54,6 +58,7 @@ export const MissionVisionBlock: Block = {
       type: 'text',
       label: 'Vision Heading',
       required: false,
+      localized: true,
       defaultValue: 'Our Vision',
     },
     {
@@ -61,6 +66,7 @@ export const MissionVisionBlock: Block = {
       type: 'textarea',
       label: 'Vision Content',
       required: false,
+      localized: true,
       defaultValue:
         'To be the premier provider of commercial kitchen solutions in the Philippines and Southeast Asia, recognized for our innovation, quality, and customer-centric approach. We aspire to set industry standards, drive technological advancements, and contribute to the evolution of the food service industry through sustainable practices and forward-thinking solutions.',
     },

@@ -24,6 +24,7 @@ export const AdvantagesBlock: Block = {
       type: 'text',
       label: 'Heading',
       required: false,
+      localized: true,
       defaultValue: 'Our Advantages',
     },
     {
@@ -31,6 +32,7 @@ export const AdvantagesBlock: Block = {
       type: 'textarea',
       label: 'Description',
       required: false,
+      localized: true,
       defaultValue:
         'What sets us apart goes beyond our services. From expert-driven solutions and personalized support to a commitment to innovation and quality, our advantages are designed to help your business grow with confidence.',
     },
@@ -59,11 +61,13 @@ export const AdvantagesBlock: Block = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           required: true,
+          localized: true,
         },
       ],
       defaultValue: [
