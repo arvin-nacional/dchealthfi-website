@@ -35,6 +35,7 @@ export const Header: GlobalConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           admin: {
             width: '50%',
             condition: (_, siblingData) => siblingData?.type === 'dropdown',
