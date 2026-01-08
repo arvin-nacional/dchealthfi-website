@@ -24,6 +24,7 @@ export const AboutBlock: Block = {
       type: 'text',
       required: true,
       label: 'Section Heading',
+      localized: true,
       defaultValue: 'Wellness | Wealth | Futuristic',
     },
     {
@@ -31,6 +32,7 @@ export const AboutBlock: Block = {
       type: 'textarea',
       required: false,
       label: 'Description',
+      localized: true,
       defaultValue:
         "A People-Helping Business With a legacy of blessings while helping those around you improve their health and reduce burdens, you also secure their family's financial future.",
     },
