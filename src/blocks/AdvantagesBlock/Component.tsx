@@ -1,5 +1,8 @@
+'use client'
+
 import React from 'react'
 import { Award, Shield, Lightbulb, Users, Clock } from 'lucide-react'
+import { useLanguage } from '@/providers/Language'
 
 import type { AdvantagesBlock as AdvantagesBlockType } from '@/payload-types'
 
@@ -9,6 +12,21 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
   advantages,
   backgroundColor,
 }) => {
+  const { locale } = useLanguage()
+
+  // Check if individual advantage should be shown in current locale
+  const shouldShowAdvantage = (showInLocales: string) => {
+    switch (showInLocales) {
+      case 'english':
+        return locale === 'en'
+      case 'chinese':
+        return locale === 'zh'
+      case 'both':
+        return true
+      default:
+        return true
+    }
+  }
   // Function to render the correct icon based on the value type
   const renderIcon = (iconType: string) => {
     switch (iconType) {
@@ -53,18 +71,20 @@ export const AdvantagesBlock: React.FC<AdvantagesBlockType> = ({
           <p className="text-lg text-gray-800 dark:text-gray-300">{description}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 max-md:grid-cols-1 lg:grid-cols-4 gap-8">
-          {advantages?.map((advantage, index) => (
-            <div
-              key={index}
-              className="dark:bg-[#0c2252] bg-white p-8 rounded-xl hover:shadow-lg transition-all duration-300 border border-red-100 flex flex-col items-center"
-            >
-              {renderIcon(advantage.icon)}
+        <div className="flex flex-wrap justify-center gap-8">
+          {advantages
+            ?.filter((advantage) => shouldShowAdvantage(advantage.showInLocales))
+            .map((advantage, index) => (
+              <div
+                key={index}
+                className="dark:bg-[#0c2252] bg-white p-8 rounded-xl hover:shadow-lg transition-all duration-300 border border-red-100 flex flex-col items-center w-full max-w-xs"
+              >
+                {renderIcon(advantage.icon)}
 
-              <h3 className="text-xl font-bold mb-3 mt-4 text-gray-800">{advantage.title}</h3>
-              <p className="text-gray-800 text-center">{advantage.description}</p>
-            </div>
-          ))}
+                <h3 className="text-xl font-bold mb-3 mt-4 text-gray-800">{advantage.title}</h3>
+                <p className="text-gray-800 text-center">{advantage.description}</p>
+              </div>
+            ))}
         </div>
       </div>
     </section>

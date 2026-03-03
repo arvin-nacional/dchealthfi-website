@@ -1,6 +1,9 @@
+'use client'
+
 import React from 'react'
 
 import { Media } from '@/components/Media'
+import { useLanguage } from '@/providers/Language'
 
 import { AboutBlock as AboutBlockType } from '@/payload-types'
 
@@ -10,6 +13,21 @@ export const AboutBlock: React.FC<AboutBlockType> = ({
   images,
   backgroundColor,
 }) => {
+  const { locale } = useLanguage()
+
+  // Check if individual image should be shown in current locale
+  const shouldShowImage = (showInLocales: string) => {
+    switch (showInLocales) {
+      case 'english':
+        return locale === 'en'
+      case 'chinese':
+        return locale === 'zh'
+      case 'both':
+        return true
+      default:
+        return true
+    }
+  }
   return (
     <div className={`py-16 ${backgroundColor || 'bg-slate-100'}`}>
       <div className="container">
@@ -20,16 +38,18 @@ export const AboutBlock: React.FC<AboutBlockType> = ({
         </div>
         <div className="flex justify-center items-center">
           <div className="flex flex-wrap gap-12 items-center justify-center">
-            {images.map((image, i: number) => (
-              <div key={i} className="w-36">
-                <Media
-                  resource={image.image}
-                  className="max-h-full max-w-full object-contain"
-                  fill={false}
-                  imgClassName="rounded-md"
-                />
-              </div>
-            ))}
+            {images
+              .filter((image) => shouldShowImage(image.showInLocales))
+              .map((image, i: number) => (
+                <div key={i} className="w-36">
+                  <Media
+                    resource={image.image}
+                    className="max-h-full max-w-full object-contain"
+                    fill={false}
+                    imgClassName="rounded-md"
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>

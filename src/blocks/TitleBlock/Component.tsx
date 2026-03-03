@@ -1,14 +1,38 @@
+'use client'
+
 import React from 'react'
 
 import { Media } from '@/components/Media'
 import type { TitleBlock as TitleBlockType } from '@/payload-types'
+import { useLanguage } from '@/providers/Language'
 
 export const TitleBlock: React.FC<TitleBlockType> = ({
   heading,
   description,
   media,
   backgroundColor,
+  showInLocales,
 }) => {
+  const { locale } = useLanguage()
+
+  // Check if block should be shown in current locale
+  const shouldShow = () => {
+    switch (showInLocales) {
+      case 'english':
+        return locale === 'en'
+      case 'chinese':
+        return locale === 'zh'
+      case 'both':
+        return true
+      default:
+        return true
+    }
+  }
+
+  if (!shouldShow()) {
+    return null
+  }
+
   return (
     <div className={`py-20 ${backgroundColor || 'bg-slate-50'}`}>
       <div className="max-w-3xl mx-auto text-center mb-16">

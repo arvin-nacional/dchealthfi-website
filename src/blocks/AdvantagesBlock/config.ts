@@ -69,6 +69,21 @@ export const AdvantagesBlock: Block = {
           required: true,
           localized: true,
         },
+        {
+          name: 'showInLocales',
+          type: 'select',
+          label: 'Show in Languages',
+          required: true,
+          defaultValue: 'both',
+          options: [
+            { label: 'English Only', value: 'english' },
+            { label: 'Chinese Only', value: 'chinese' },
+            { label: 'Both Languages', value: 'both' },
+          ],
+          admin: {
+            description: 'Choose which languages this specific advantage should be visible in.',
+          },
+        },
       ],
       defaultValue: [
         {

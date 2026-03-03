@@ -20,6 +20,21 @@ export const TitleBlock: Block = {
       label: 'Background Color',
     },
     {
+      name: 'showInLocales',
+      type: 'select',
+      label: 'Show in Languages',
+      required: true,
+      defaultValue: 'chinese',
+      options: [
+        { label: 'English Only', value: 'english' },
+        { label: 'Chinese Only', value: 'chinese' },
+        { label: 'Both Languages', value: 'both' },
+      ],
+      admin: {
+        description: 'Choose which languages this block should be visible in.',
+      },
+    },
+    {
       name: 'media',
       type: 'upload',
       relationTo: 'media',

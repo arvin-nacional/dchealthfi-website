@@ -972,6 +972,10 @@ export interface AdvantagesBlock {
         icon: 'award' | 'shield' | 'lightbulb' | 'users' | 'clock' | 'chart';
         title: string;
         description: string;
+        /**
+         * Choose which languages this specific advantage should be visible in.
+         */
+        showInLocales: 'english' | 'chinese' | 'both';
         id?: string | null;
       }[]
     | null;
@@ -989,6 +993,10 @@ export interface AboutBlock {
   description?: string | null;
   images: {
     image: string | Media;
+    /**
+     * Choose which languages this specific image should be visible in.
+     */
+    showInLocales: 'english' | 'chinese' | 'both';
     id?: string | null;
   }[];
   id?: string | null;
@@ -1001,6 +1009,10 @@ export interface AboutBlock {
  */
 export interface TitleBlock {
   backgroundColor: 'bg-slate-50' | 'bg-slate-100';
+  /**
+   * Choose which languages this block should be visible in.
+   */
+  showInLocales: 'english' | 'chinese' | 'both';
   media?: (string | null) | Media;
   heading: string;
   description: string;
@@ -1538,6 +1550,7 @@ export interface AdvantagesBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        showInLocales?: T;
         id?: T;
       };
   id?: T;
@@ -1555,6 +1568,7 @@ export interface AboutBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        showInLocales?: T;
         id?: T;
       };
   id?: T;
@@ -1566,6 +1580,7 @@ export interface AboutBlockSelect<T extends boolean = true> {
  */
 export interface TitleBlockSelect<T extends boolean = true> {
   backgroundColor?: T;
+  showInLocales?: T;
   media?: T;
   heading?: T;
   description?: T;
